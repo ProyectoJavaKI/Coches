@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class Ventana  extends JDialog implements ActionListener, WindowListener{
+    
     private ConexionDB conexion = new ConexionDB();
     
 /*Jpanel que contiene a todo*/
