@@ -1,4 +1,4 @@
-package Interfaz;
+package InterfazIsma;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
