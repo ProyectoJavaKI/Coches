@@ -51,8 +51,8 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
     private JComboBox cmb_eliminar_coche;
     private JComboBox cmb_actualiza_coche;
     private MiModelo modelo = new MiModelo();
-    private MiModeloCombo miComboModel_elimina = new MiModeloCombo();
-    private MiModeloCombo miComboModel_actualiza = new MiModeloCombo();
+    private DefaultComboBoxModel miComboModel_elimina = new DefaultComboBoxModel();
+    private DefaultComboBoxModel miComboModel_actualiza = new DefaultComboBoxModel();
     
     
     Ventana_coche(){
