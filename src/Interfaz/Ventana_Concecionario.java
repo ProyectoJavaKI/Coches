@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,13 +20,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
-public class Ventana_coche  extends JDialog implements ActionListener, WindowListener{
-    
+public class Ventana_Concecionario extends JDialog implements ActionListener, WindowListener {
     private ConexionDB conexion = new ConexionDB();
     
-/*Jpanel que contiene a todo*/
+   /*Jpanel que contiene a todo*/
     private JPanel panel;
     private JScrollPane scl_tabla;
     private JTable tbl_tabla;
@@ -59,7 +58,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
     private DefaultComboBoxModel ComboModel_modelo_coche_actualizar = new DefaultComboBoxModel();
     
     
-    Ventana_coche(){
+    Ventana_Concecionario(){
         panel = (JPanel)this.getContentPane();
         panel.setLayout(null);
         
