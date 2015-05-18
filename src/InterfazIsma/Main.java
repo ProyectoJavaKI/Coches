@@ -7,7 +7,7 @@ package InterfazIsma;
 public class Main {
     public static void main(String[] args) {
 
-            VentanaIsma uno = new VentanaIsma();
+            VentanaCoches uno = new VentanaCoches();
             uno.setVisible(true);
         
         

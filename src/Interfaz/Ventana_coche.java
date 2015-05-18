@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -50,14 +49,13 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
     private JComboBox cmb_modelo_coche;
     private JComboBox cmb_nombre_coche_actualizar;
     private JComboBox cmb_modelo_coche_actualizat;
-    private MiModelo modelo = new MiModelo();
+    private MiModelo modelo_tabla = new MiModelo();
     private DefaultComboBoxModel miComboModel_elimina = new DefaultComboBoxModel();
     private DefaultComboBoxModel miComboModel_actualiza = new DefaultComboBoxModel();
     private DefaultComboBoxModel ComboModel_nombre = new DefaultComboBoxModel();
     private DefaultComboBoxModel ComboModel_modelo_coche = new DefaultComboBoxModel();
     private DefaultComboBoxModel ComboModel_nombre_actualizarr = new DefaultComboBoxModel();
     private DefaultComboBoxModel ComboModel_modelo_coche_actualizar = new DefaultComboBoxModel();
-    
     
     Ventana_coche(){
         panel = (JPanel)this.getContentPane();
@@ -74,7 +72,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         setModal(true);
         
         /*creamos los componentes*/
-        tbl_tabla = new JTable(modelo);
+        tbl_tabla = new JTable(modelo_tabla);
         scl_tabla = new JScrollPane(tbl_tabla);
         btn_insertar_coche = new JButton("insertar coche");
         btn_eliminar_coche = new JButton("eliminar coche");
@@ -119,9 +117,9 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         cmb_actualiza_coche.setBounds(30, 290, 90, 30);
         
         /*añadimos datos a la tabla*/
-        modelo.addColumn("codigo coche");
-        modelo.addColumn("nombre");
-        modelo.addColumn("modelo");
+        modelo_tabla.addColumn("codigo coche");
+        modelo_tabla.addColumn("nombre");
+        modelo_tabla.addColumn("modelo");
 /*Este apartado se rellena con la informacion de la bbdd (con una sentencia select*/
         cargar_tabla();
         /*añadiendo los elementos al panel*/
@@ -180,7 +178,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
                 fila[0] = (String) (rs.getObject("CODCOCHE"));
                 fila[1] =  (String) (rs.getObject("NOMBRE"));
                 fila[2] =  (String) (rs.getObject("MODELO"));
-                modelo.addRow ( fila ); // Añade una fila al final de la tabla
+                modelo_tabla.addRow ( fila ); // Añade una fila al final de la tabla
                 cmb_eliminar_coche.addItem(fila[0]); // Añade una fila al final combo elimina
                 cmb_actualiza_coche.addItem(fila[0]); // Añade una fila al final del combo actualiza
             } //fin while
@@ -229,7 +227,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
                         + cmb_nombre_coche.getSelectedItem()+ "', '"
                         + cmb_modelo_coche.getSelectedItem()+ "')";
             st.execute(insertar);
-            modelo.setRowCount(0);
+            modelo_tabla.setRowCount(0);
             cmb_eliminar_coche.removeAllItems();
             cmb_actualiza_coche.removeAllItems();
             st.close();
@@ -251,7 +249,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
 
                 String insertar = "DELETE FROM `coches`.`coches` WHERE `CODCOCHE` = '"+opt+"'";
                 st.execute(insertar);
-                modelo.setRowCount(0);
+                modelo_tabla.setRowCount(0);
                 cmb_eliminar_coche.removeAllItems();
                 cmb_actualiza_coche.removeAllItems();
                 st.close();
@@ -273,7 +271,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
 
                 String insertar = "UPDATE `coches`.`coches` SET `NOMBRE`='"+cmb_nombre_coche_actualizar.getSelectedItem()+"',`MODELO`='"+cmb_modelo_coche_actualizat.getSelectedItem()+"' WHERE `CODCOCHE`='"+cmb_actualiza_coche.getSelectedItem()+"'";
                 st.executeUpdate(insertar);
-                modelo.setRowCount(0);
+                modelo_tabla.setRowCount(0);
                 cmb_actualiza_coche.removeAllItems();
                 cmb_eliminar_coche.removeAllItems();
                 st.close();
