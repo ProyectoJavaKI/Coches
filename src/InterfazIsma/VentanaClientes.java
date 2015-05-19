@@ -4,43 +4,35 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
+
 
 /**
  *
  * @author Lynchaniano
  */
-public class VentanaClientes extends JFrame implements TableModelListener {
+public class VentanaClientes extends JFrame  {
 
     private ConexionDB conexion = new ConexionDB();//La conexión con la base de datos
 
@@ -79,7 +71,7 @@ public class VentanaClientes extends JFrame implements TableModelListener {
     JButton JButtonResetearModificar;
 
 
-    /*ESTO PARA EL COMBO DE ELIMINACIÓN DE COCHES*/
+    /*ESTO PARA EL COMBO DE ELIMINACIÓN DE CLIENTES*/
     JPanel JpanelEliminarCliente;
     JLabel JLabelCabeceraEliminar;
     JComboBox JComboEliminarCliente;
@@ -95,7 +87,7 @@ public class VentanaClientes extends JFrame implements TableModelListener {
     JLabel RCarro, RCarro2, RCarro3;
 
     public VentanaClientes() {
-        super();
+        super();//Heredo el JFrame
         /*DEFINO LA VENTANA MADRE*/
         setSize(720, 380);//le doy altura y ancho a la ventana (JFrame)
         setTitle("GESTIÓN CLIENTES");//la titulo
@@ -108,7 +100,7 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         panelClientes.setLayout(new BorderLayout());//Border... para distribuir el resto de paneles.(EAST,WEST,NORTH,SOUTH,CENTER)
 
         /*----------------------------------------------------------------------------------------------------------------
-         DIBUJO EL PANEL DE QUE ALMACENARÁ LA TABLA CON LOS DATOS DE LOS COCHES
+         DIBUJO EL PANEL DE QUE ALMACENARÁ LA TABLA CON LOS DATOS DE LOS CLIENTES
          ------------------------------------------------------------------------------------------------------------------*/
         ModeloTablaClientes = new CustomDefaultTableModel();
         Tabla_Clientes = new JTable(ModeloTablaClientes);
@@ -162,13 +154,13 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         JTextFieldCiudadInsertar = new JTextField();
         JPanelInsertar.add(JTextFieldCiudadInsertar);
 
-        /*insertamos los botones aceptar y reset (resetear campos)*/
+         /*INSERTAMOS LOS BOTONES Y SU LISTENER*/
         JButtonAceptarInsertar = new JButton("ACEPTAR");
         JPanelInsertar.add(JButtonAceptarInsertar);
         JButtonCancelarInsertar = new JButton("RESET");
         JPanelInsertar.add(JButtonCancelarInsertar);
 
-        /* y activamos Listeners de los botones*/
+       /* ACTIVO EL LISTENER*/
         JButtonAceptarInsertar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -190,7 +182,7 @@ public class VentanaClientes extends JFrame implements TableModelListener {
                 }
             }
         });
-
+        /* ACTIVO EL LISTENER*/ 
         JButtonCancelarInsertar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -247,7 +239,7 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         JButtonAceptarModificar = new JButton("ACEPTAR");
         JPanelModificar.add(JButtonAceptarModificar);
 
-        /* y activamos Listeners de los botones*/
+        //* ACTIVO EL LISTENER*/
         JButtonAceptarModificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -266,7 +258,7 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         JButtonResetearModificar = new JButton("RESET");
         JPanelModificar.add(JButtonResetearModificar);
 
-        /* y activamos Listeners de los botones*/
+        /* ACTIVO EL LISTENER*/
         JButtonResetearModificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -300,9 +292,10 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         JComboEliminarCliente.setModel(ModeloClienteEliminar);
 
         JpanelEliminarCliente.add(JComboEliminarCliente);
-
+        /*INSERTO EL BOTÓN ELIMINAR Y SU LISTENER*/
         JButtonEliminarClientes = new JButton("ELIMINAR");
         JpanelEliminarCliente.add(JButtonEliminarClientes);
+        /* ACTIVO EL LISTENER*/
         JButtonEliminarClientes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -315,9 +308,12 @@ public class VentanaClientes extends JFrame implements TableModelListener {
                 }
             }
         });
+        
+        /*POR ÚLTIMO, RELLENAMOS LA TABLA CON DATOS DE LA BASE*/
         Cargar_Tabla_Clientes();
     }
-
+    /*MÉTODO PARA CARGAR DATOS AL JTABLE A TRAVÉS DE CONSULTA SQL
+        APROVECHANDO EL RECORRIDO DE LAS TABLAS,TAMBIEN RELLENA LOS JCOMBOBOX*/
     void Cargar_Tabla_Clientes() {
 
         Connection miConexion;
@@ -341,7 +337,8 @@ public class VentanaClientes extends JFrame implements TableModelListener {
             Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+     /*MÉTODO PARA INSERTAR DATOS EN LA BASE
+        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMOBOX PARA PODER ACTUALIZARLOS Y EVITAR DUPLICIDAD EN SU CONTENIDO */
     void Inserta_Cliente() {
 
         Connection miConexion = (Connection) conexion.ConectarMysql();
@@ -371,7 +368,8 @@ public class VentanaClientes extends JFrame implements TableModelListener {
             Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    /*MÉTODO PARA ELIMINAR DATOS DE LA BASE
+        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
     void Eliminar_Cliente(){
         Object[] opciones = {"Sí, Eliminar este cliente",  "No, no eliminar"};
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a eliminar un cohce ¿es ta seguro?: ",
@@ -397,7 +395,8 @@ public class VentanaClientes extends JFrame implements TableModelListener {
             }
         }
     }
-    
+        /*MÉTODO PARA MODIFICAR DATOS DE LA BASE
+        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
     void Modificar_Cliente(){
         Object[] opciones = {"Sí, actualizar datos de este cliente",  "No, no actualizar datos de este cliente"};
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a actualizar la informacion de un cohce ¿es ta seguro?: ",
@@ -452,9 +451,6 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         }
     }
 
-    @Override
-    public void tableChanged(TableModelEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
 
 }

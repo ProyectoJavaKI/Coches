@@ -24,24 +24,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Lynchaniano
  */
-public class VentanaCoches extends JFrame implements TableModelListener {
+public class VentanaCoches extends JFrame  {
 
     private ConexionDB conexion = new ConexionDB();//La conexión con la base de datos
 
-    //public boolean TablaCoches = true;//Para controlar la tabla a visualizar
+    
 
     /*UN JPANEL PARA CONTENER TODOS LOS DEMÁS*/
     JPanel panel;
 
-    /*ESTO PARA EL FORMULARIO PARA INSERTAR COCHES*/
+    /*CREO LOS COMPONENTES DE LA INTERFAZ PARA INSERTAR COCHES*/
     JPanel JPanelInsertar;//El Panel que contendrá todos los campos de insercción de datos
     JLabel JLabelCabeceraInsertar;//La cabecera del panel
     JLabel JLabelNombreInsertar;
@@ -54,7 +52,7 @@ public class VentanaCoches extends JFrame implements TableModelListener {
     String insertar;
 
 
-    /*ESTO DEL FORMULARIO PARA MODIFICAR COCHES*/
+     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA MODIFICAR COCHES*/
     JPanel JPanelModificar;
     JLabel JLabelCabeceraModificar;
     JLabel JLabelCodigoModificar;
@@ -69,18 +67,22 @@ public class VentanaCoches extends JFrame implements TableModelListener {
     JButton JButtonAceptarModificar;
     JButton JButtonCancelarModificar;
 
-    /*ESTO PARA EL COMBO DE ELIMINACIÓN DE COCHES*/
+     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA ELIMINAR COCHES*/
     JPanel JpanelEliminar;
     JLabel JLabelCabeceraEliminar;
     JComboBox JComboEliminar;
     DefaultComboBoxModel ModeloComboEliminar;
     JButton JButtonEliminarCoches;
 
-    /*ESTO ES PARA LA SECCIÓN DE LA TABLA COCHES*/
+    /*CREO LOS COMPONENTES DE LA TABLA (JTable) COCHES*/
     JScrollPane JScrollPaneTablacoches;
     CustomDefaultTableModel ModeloTablaCoches;
     JTable TablaCoches;
 
+    
+    
+    /* EN EL CONSTRUCTOR INICIALIZAMOS TODOS LOS PANELES QUE RELLENARÁN EL FRAME SUS COMPONENTES */
+    
     public VentanaCoches() {
         super();//Heredo el JFrame
         /*DEFINO LA VENTANA MADRE*/
@@ -137,7 +139,7 @@ public class VentanaCoches extends JFrame implements TableModelListener {
         JButtonAceptarInsertar = new JButton("ACEPTAR");
         JPanelInsertar.add(JButtonAceptarInsertar);
 
-        /* y activamos Listeners de los botones*/
+        /* ACTIVO EL LISTENER*/
         JButtonAceptarInsertar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -191,7 +193,7 @@ public class VentanaCoches extends JFrame implements TableModelListener {
         JButtonAceptarModificar = new JButton("ACEPTAR");
         JPanelModificar.add(JButtonAceptarModificar);
         
-         /* y activamos Listeners de los botones*/
+         /* ACTIVO EL LISTENER*/
         JButtonAceptarModificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -230,7 +232,7 @@ public class VentanaCoches extends JFrame implements TableModelListener {
         JButtonEliminarCoches = new JButton("Eliminar");
         JpanelEliminar.add(JButtonEliminarCoches);
         
-        /* y activamos Listeners de los botones*/
+         /* ACTIVO EL LISTENER*/
         JButtonEliminarCoches.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -248,11 +250,12 @@ public class VentanaCoches extends JFrame implements TableModelListener {
         });
         
         
-        
+        /*POR ÚLTIMO, RELLENAMOS LA TABLA CON DATOS DE LA BASE*/
         Cargar_Tabla_Coches();
 
     }
-
+    /*MÉTODO PARA CARGAR DATOS AL JTABLE A TRAVÉS DE CONSULTA SQL
+        APROVECHANDO EL RECORRIDO DE LAS TABLAS,TAMBIEN RELLENA LOS JCOMBOBOX*/
     void Cargar_Tabla_Coches() {
 
         Connection miConexion = (Connection) conexion.ConectarMysql();
@@ -301,7 +304,8 @@ public class VentanaCoches extends JFrame implements TableModelListener {
             Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /*MÉTODO PARA INSERTAR DATOS EN LA BASE
+        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMOBOX PARA PODER ACTUALIZARLOS Y EVITAR DUPLICIDAD EN SU CONTENIDO */
     void Insertar_Coche() {
 
         Connection miConexion = (Connection) conexion.ConectarMysql();
@@ -330,7 +334,8 @@ public class VentanaCoches extends JFrame implements TableModelListener {
             Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /*MÉTODO PARA ELIMINAR DATOS DE LA BASE
+        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
     void Eliminar_Coche() {
         Object[] opciones = {"Sí, Eliminar este coche", "No, no eliminar"};
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a eliminar un cohce ¿es ta seguro?: ",
@@ -351,7 +356,8 @@ public class VentanaCoches extends JFrame implements TableModelListener {
             }
         }
     }
-
+    /*MÉTODO PARA MODIFICAR DATOS DE LA BASE
+        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
     void Modificar_Coche() {
         Object[] opciones = {"Sí, actualizar datos de este coche", "No, no actualizar datos de este coche"};
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a actualizar la informacion de un cohce ¿es ta seguro?: ",
@@ -395,10 +401,6 @@ public class VentanaCoches extends JFrame implements TableModelListener {
            return Object.class;
         }
     }
-
-    @Override
-    public void tableChanged(TableModelEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    
 
 }
