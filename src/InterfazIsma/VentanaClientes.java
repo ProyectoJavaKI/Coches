@@ -63,11 +63,12 @@ public class VentanaClientes extends JFrame implements TableModelListener {
     JButton JButtonCancelarInsertar;
     String insertar;
 
-    /*ESTO DEL FORMULARIO PARA MODIFICAR COCHES*/
+    /*ESTO DEL FORMULARIO PARA MODIFICAR CLIENTES*/
     JComboBox JComboDNI;
     DefaultComboBoxModel ModeloDniModificar;
     JPanel JPanelModificar;
     JLabel JLabelCabeceraModificar;
+    JLabel JLabelDNIModificar;
     JLabel JlabelNombreModificar;
     JTextField JTextFieldNombreModificar;
     JLabel JLabelApellidoModificar;
@@ -87,14 +88,17 @@ public class VentanaClientes extends JFrame implements TableModelListener {
 
     /*ESTO ES PARA LA SECCIÓN DE LA TABLA CLIENTES*/
     JScrollPane JScrollPaneTabla;
-    DefaultTableModel modeloTablaClientes;
+    CustomDefaultTableModel ModeloTablaClientes;
     JTable Tabla_Clientes;
+
+    /*Estos JLabel son para ajustar los campos en los GridLayouts*/
+    JLabel RCarro, RCarro2, RCarro3;
 
     public VentanaClientes() {
         super();
         /*DEFINO LA VENTANA MADRE*/
-        setSize(512, 320);//le doy altura y ancho a la ventana (JFrame)
-        setTitle("GESTIÓN COCHES");//la titulo
+        setSize(720, 380);//le doy altura y ancho a la ventana (JFrame)
+        setTitle("GESTIÓN CLIENTES");//la titulo
         setResizable(false);//Evito que se pueda redimensionar la ventana
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//Habilito el botón de cierre en la ventana
         setLocationRelativeTo(null);
@@ -106,15 +110,15 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         /*----------------------------------------------------------------------------------------------------------------
          DIBUJO EL PANEL DE QUE ALMACENARÁ LA TABLA CON LOS DATOS DE LOS COCHES
          ------------------------------------------------------------------------------------------------------------------*/
-        modeloTablaClientes = new DefaultTableModel();
-        Tabla_Clientes = new JTable(modeloTablaClientes);
+        ModeloTablaClientes = new CustomDefaultTableModel();
+        Tabla_Clientes = new JTable(ModeloTablaClientes);
         JScrollPaneTabla = new JScrollPane(Tabla_Clientes);
         panelClientes.add("Center", JScrollPaneTabla);//Lo situo al centro del BorderLayout
-        modeloTablaClientes.addColumn("DNI");
-        modeloTablaClientes.addColumn("NOMBRE");
-        modeloTablaClientes.addColumn("APELLIDO");
-        modeloTablaClientes.addColumn("CIUDAD");
-        cargar_tabla(modeloTablaClientes);
+        ModeloTablaClientes.addColumn("DNI");
+        ModeloTablaClientes.addColumn("NOMBRE");
+        ModeloTablaClientes.addColumn("APELLIDO");
+        ModeloTablaClientes.addColumn("CIUDAD");
+
 
         /*----------------------------------------------------------------------------------------------------------------
          DIBUJO EL PANEL DE INSERCIÓN Y SUS COMPONENTES
@@ -126,10 +130,13 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         panelClientes.add("West", JPanelInsertar);//Lo situo a la izquierda del Panel General
 
         /*INSERTAMOS LOS CAMPOS DE INSERCIÓN*/
-        JLabelCabeceraInsertar = new JLabel("Insertar:");
+        JLabelCabeceraInsertar = new JLabel("INSERTAR");
         JLabelCabeceraInsertar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraInsertar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelInsertar.add(JLabelCabeceraInsertar);
+
+        RCarro3 = new JLabel(" ");
+        JPanelInsertar.add(RCarro3);
 
         JlabelNombreInsertar = new JLabel("Nombre:");
         JPanelInsertar.add(JlabelNombreInsertar);
@@ -137,11 +144,17 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         JTextFieldNombreInsertar = new JTextField();
         JPanelInsertar.add(JTextFieldNombreInsertar);
 
+        RCarro = new JLabel(" ");
+        JPanelInsertar.add(RCarro);
+
         JlabelApellidoInsertar = new JLabel("Apellido:");
         JPanelInsertar.add(JlabelApellidoInsertar);
 
         JTextFieldApellidoInsertar = new JTextField();
         JPanelInsertar.add(JTextFieldApellidoInsertar);
+
+        RCarro2 = new JLabel(" ");
+        JPanelInsertar.add(RCarro2);
 
         JLabelCiudadInsertar = new JLabel("Ciudad:");
         JPanelInsertar.add(JLabelCiudadInsertar);
@@ -162,7 +175,7 @@ public class VentanaClientes extends JFrame implements TableModelListener {
                 try {
                     Inserta_Cliente();
                     LimpiarJTable();
-                    cargar_tabla(modeloTablaClientes);
+                    Cargar_Tabla_Clientes();
 //                    //Compruebo su validez con un método definido posteriormente
 //                    if (compruebaValidez()) {
 //                        JOptionPane.showMessageDialog(null,
@@ -191,6 +204,83 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         });
 
         /*----------------------------------------------------------------------------------------------------------------
+         DIBUJO EL PANEL DE MODIFICACIÓN Y SUS COMPONENTES
+         ------------------------------------------------------------------------------------------------------------------*/
+        JPanelModificar = new JPanel();//Inicializo el panelClientes que contendrá el formulario
+        JPanelModificar.setLayout(new BoxLayout(JPanelModificar, BoxLayout.Y_AXIS));
+        JPanelModificar.setBackground(Color.decode("#C1E7EE"));//Le añado un color de fondo
+        JPanelModificar.setBorder(new EmptyBorder(10, 10, 10, 10));//Le pongo unos Borders para separarlos un poco de la ventana (JFrame).
+        panelClientes.add("East", JPanelModificar);//Lo situo a la derecha del Panel General
+
+        /*INSERTAMOS LOS CAMPOS DE MODIFICACIÓN*/
+        JLabelCabeceraModificar = new JLabel("MODIFICAR");
+        JLabelCabeceraModificar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
+        JLabelCabeceraModificar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
+        JPanelModificar.add(JLabelCabeceraModificar);
+
+        JLabelDNIModificar = new JLabel("DNI");
+        JPanelModificar.add(JLabelDNIModificar);
+
+        ModeloDniModificar = new DefaultComboBoxModel();
+        JComboDNI = new JComboBox(ModeloDniModificar);
+        JPanelModificar.add(JComboDNI);
+
+        JlabelNombreModificar = new JLabel("Nombre:");
+        JPanelModificar.add(JlabelNombreModificar);
+
+        JTextFieldNombreModificar = new JTextField();
+        JPanelModificar.add(JTextFieldNombreModificar);
+
+        JLabelApellidoModificar = new JLabel("Apellido:");
+        JPanelModificar.add(JLabelApellidoModificar);
+
+        JTextFieldApellidoModificar = new JTextField();
+        JPanelModificar.add(JTextFieldApellidoModificar);
+
+        JLabelCiudadModificar = new JLabel("Ciudad:");
+        JPanelModificar.add(JLabelCiudadModificar);
+
+        JTextFieldCiudadModificar = new JTextField();
+        JPanelModificar.add(JTextFieldCiudadModificar);
+
+        /*INSERTO EL BOTÓN ACEPTAR MODIFICACIÓN*/
+        JButtonAceptarModificar = new JButton("ACEPTAR");
+        JPanelModificar.add(JButtonAceptarModificar);
+
+        /* y activamos Listeners de los botones*/
+        JButtonAceptarModificar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    Modificar_Cliente();
+                    LimpiarJTable();
+                    Cargar_Tabla_Clientes();
+
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        /*INSERTO EL BOTÓN RESET MODIFICACIÓN*/
+        JButtonResetearModificar = new JButton("RESET");
+        JPanelModificar.add(JButtonResetearModificar);
+
+        /* y activamos Listeners de los botones*/
+        JButtonResetearModificar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    JTextFieldNombreModificar.setText(null);
+                    JTextFieldApellidoModificar.setText(null);
+                    JTextFieldCiudadModificar.setText(null);
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        /*----------------------------------------------------------------------------------------------------------------
          DIBUJO EL PANEL DE ELIMINACIÓN Y SUS COMPONENTES
          ------------------------------------------------------------------------------------------------------------------*/
         JpanelEliminarCliente = new JPanel();//Inicializo el panelClientes en el que irán los botones
@@ -199,9 +289,9 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         JpanelEliminarCliente.setBorder(new EmptyBorder(10, 10, 10, 10));//Le pongo unos Borders para separarlos un poco de la ventana (JFrame).
         panelClientes.add("South", JpanelEliminarCliente);//Lo situo abajo del BorderLayout
 
-        JLabelCabeceraEliminar = new JLabel("Eliminar:");
+        JLabelCabeceraEliminar = new JLabel("ELIMINAR");
         JLabelCabeceraEliminar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
-        JLabelCabeceraEliminar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
+        JLabelCabeceraEliminar.setForeground(Color.decode("#000000"));//Personaliza el color del botón por código RGB
         JpanelEliminarCliente.add(JLabelCabeceraEliminar);
 
         ModeloClienteEliminar = new DefaultComboBoxModel();
@@ -217,15 +307,18 @@ public class VentanaClientes extends JFrame implements TableModelListener {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
+                    Eliminar_Cliente();
+                    LimpiarJTable();
+                    Cargar_Tabla_Clientes();
 
                 } catch (Exception err) {
                 }
             }
         });
-
+        Cargar_Tabla_Clientes();
     }
 
-    void cargar_tabla(DefaultTableModel modelotabla) {
+    void Cargar_Tabla_Clientes() {
 
         Connection miConexion;
         miConexion = (Connection) conexion.ConectarMysql();
@@ -233,13 +326,15 @@ public class VentanaClientes extends JFrame implements TableModelListener {
         try (Statement st = miConexion.createStatement()) {
             String consulta = "SELECT * FROM `COCHES`.`CLIENTES`";
             ResultSet rs = st.executeQuery(consulta);
-            Object[] fila = new Object[3];
+            Object[] fila = new Object[4];
             while (rs.next()) {
                 fila[0] = (String) (rs.getObject("DNI"));
                 fila[1] = (String) (rs.getObject("NOMBRE"));
                 fila[2] = (String) (rs.getObject("APELLIDO"));
                 fila[3] = (String) (rs.getObject("CIUDAD"));
-                modelotabla.addRow(fila); // Añade una fila al final de la tabla
+                ModeloTablaClientes.addRow(fila); // Añade una fila al final de la tabla
+                JComboEliminarCliente.addItem(fila[0]); // Añade una fila al final combo elimina
+                JComboDNI.addItem(fila[0]); // Añade una fila al final del combo actualiza
             } //fin while
             st.close();
         } catch (SQLException ex) {
@@ -267,26 +362,94 @@ public class VentanaClientes extends JFrame implements TableModelListener {
                     + JTextFieldNombreInsertar.getText() + "', '"
                     + JTextFieldApellidoInsertar.getText() + "', '"
                     + JTextFieldCiudadInsertar.getText() + "')";
-            st.execute(insertar);
-//            modelo_tabla.setRowCount(0);
-//            cmb_eliminar_coche.removeAllItems();
-//            cmb_actualiza_coche.removeAllItems();
+                    st.execute(insertar);
+                    ModeloTablaClientes.setRowCount(0);
+                    JComboEliminarCliente.removeAllItems();
+                    JComboDNI.removeAllItems();
             st.close();
         } catch (SQLException ex) {
             Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    void Eliminar_Cliente(){
+        Object[] opciones = {"Sí, Eliminar este cliente",  "No, no eliminar"};
+        int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a eliminar un cohce ¿es ta seguro?: ",
+        "Confirmar eliminación del Coche", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);        
+        if(respuestaUsuario == 0)
+        {
+            Connection miConexion = (Connection) conexion.ConectarMysql();
+            String opt = (String) JComboEliminarCliente.getSelectedItem();
+            try (Statement st = miConexion.createStatement()) {
+
+                String insertar = "DELETE FROM `coches`.`clientes` WHERE `DNI` = '"+opt+"'";
+                st.execute(insertar);
+                ModeloTablaClientes.setRowCount(0);
+                JComboEliminarCliente.removeAllItems();
+                JComboDNI.removeAllItems();
+                st.close();
+            } 
+            catch (SQLException ex) {
+                Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
+                ModeloTablaClientes.setRowCount(0);
+                JComboEliminarCliente.removeAllItems();
+                JComboDNI.removeAllItems();
+            }
+        }
+    }
+    
+    void Modificar_Cliente(){
+        Object[] opciones = {"Sí, actualizar datos de este cliente",  "No, no actualizar datos de este cliente"};
+        int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a actualizar la informacion de un cohce ¿es ta seguro?: ",
+        "Confirmar actualizacion del Coche", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);        
+        if(respuestaUsuario == 0)
+        {
+            Connection miConexion = (Connection) conexion.ConectarMysql();
+            try (Statement st = miConexion.createStatement()) {
+
+                String insertar = "UPDATE `coches`.`clientes` SET `NOMBRE`='"+JTextFieldNombreModificar.getText()+"',`APELLIDO`='"+JTextFieldApellidoModificar.getText()+"', `CIUDAD`='"+JTextFieldCiudadModificar.getText()+"' WHERE `DNI`='"+JComboDNI.getSelectedItem()+"'";
+                st.executeUpdate(insertar);
+                ModeloTablaClientes.setRowCount(0);
+                JComboDNI.removeAllItems();
+                JComboEliminarCliente.removeAllItems();
+                st.close();
+            } 
+            catch (SQLException ex) {
+                Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
+                ModeloTablaClientes.setRowCount(0);
+                JComboEliminarCliente.removeAllItems();
+                JComboDNI.removeAllItems();
+            }
+        }
+    }
     /*RESETEAR DATOS DE JTABLE (Para poder insertar nuevos)*/
 
     void LimpiarJTable() {
-        int a = modeloTablaClientes.getRowCount();
+        int a = ModeloTablaClientes.getRowCount();
         for (int i = 0; i < a; i++) {
-            modeloTablaClientes.removeRow(0);
+            ModeloTablaClientes.removeRow(0);
         }
     }
 
-    public class MiModeloCombo extends DefaultComboBoxModel {
-        //vacio para que este por defecto
+    /*CREAMOS UN MODELO DE TABLA PERSONALIZADO PARA EVITAR QUE EL USUARIO INTERACTÚE CON LOS DATOS */
+    public class CustomDefaultTableModel extends DefaultTableModel {
+
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+
+        public Class getColumnClass(int columna) {
+            if (columna == 0) {
+                return String.class; // en la bbdd es un Char(3) por eso pongo String
+            }
+            if (columna == 1) {
+                return String.class;
+            }
+            if (columna == 2) {
+                return String.class;
+            }
+            return Object.class;
+        }
     }
 
     @Override

@@ -116,7 +116,7 @@ public class VentanaCoches extends JFrame implements TableModelListener {
         panel.add("West", JPanelInsertar);//Lo situo a la izquierda del Panel General
 
         /*INSERTO LOS CAMPOS DE INSERTAR*/
-        JLabelCabeceraInsertar = new JLabel("Insertar:");
+        JLabelCabeceraInsertar = new JLabel("INSERTAR");
         JLabelCabeceraInsertar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraInsertar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelInsertar.add(JLabelCabeceraInsertar);
@@ -159,12 +159,12 @@ public class VentanaCoches extends JFrame implements TableModelListener {
          ------------------------------------------------------------------------------------------------------------------*/
         JPanelModificar = new JPanel();//Inicializo el panel que contendrá el formulario
         JPanelModificar.setLayout(new BoxLayout(JPanelModificar, BoxLayout.Y_AXIS));
-        JPanelModificar.setBackground(Color.decode("#BEECE2"));//Le añado un color de fondo
+        JPanelModificar.setBackground(Color.decode("#C1E7EE"));//Le añado un color de fondo
         JPanelModificar.setBorder(new EmptyBorder(10, 10, 10, 10));//Le pongo unos Borders para separarlos un poco de la ventana (JFrame).
         panel.add("East", JPanelModificar);//Lo situo a la izquierda del Panel General
 
         /*INSERTO LOS CAMPOS PARA MODIFICACIÓN*/
-        JLabelCabeceraModificar = new JLabel("Modificar:");
+        JLabelCabeceraModificar = new JLabel("MODIFICAR");
         JLabelCabeceraModificar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraModificar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelModificar.add(JLabelCabeceraModificar);
@@ -217,9 +217,9 @@ public class VentanaCoches extends JFrame implements TableModelListener {
         JpanelEliminar.setBorder(new EmptyBorder(10, 10, 10, 10));//Le pongo unos Borders para separarlos un poco de la ventana (JFrame).
         panel.add("South", JpanelEliminar);//Lo situo abajo del BorderLayout
 
-        JLabelCabeceraEliminar = new JLabel("Eliminar:");
+        JLabelCabeceraEliminar = new JLabel("ELIMINAR");
         JLabelCabeceraEliminar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
-        JLabelCabeceraEliminar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
+        JLabelCabeceraEliminar.setForeground(Color.decode("#000000"));//Personaliza el color por código RGB
         JpanelEliminar.add(JLabelCabeceraEliminar);
 
         ModeloComboEliminar = new DefaultComboBoxModel();
