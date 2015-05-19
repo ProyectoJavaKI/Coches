@@ -14,7 +14,7 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
     private JButton btn_coche;
     private JButton btn_consecionario_coche;
     private JButton btn_actualizar_coche;
-    private JButton btn_insertar_venta;
+    private JButton btn_insertar_distribucion;
     private JButton btn_eliminar_venta;
     private JButton btn_actualizar_venta;
     private JButton btn_cliente;
@@ -38,7 +38,7 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
         btn_consecionario_coche = new JButton("CONCESIONARIO");
         btn_actualizar_coche = new JButton("-------------");
         
-        btn_insertar_venta = new JButton("-------------");
+        btn_insertar_distribucion = new JButton("DISTRIBUCION");
         btn_eliminar_venta = new JButton("-------------");
         btn_actualizar_venta = new JButton("-------------");
         
@@ -51,7 +51,7 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
         btn_consecionario_coche.setBounds(50, 70, 150, 30);
         btn_actualizar_coche.setBounds(50, 110, 150, 30);
         
-        btn_insertar_venta.setBounds(210, 30, 180, 30);
+        btn_insertar_distribucion.setBounds(210, 30, 180, 30);
         btn_eliminar_venta.setBounds(210, 70, 180, 30);
         btn_actualizar_venta.setBounds(210, 110, 180, 30);
         
@@ -64,7 +64,7 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
         panel.add(btn_coche);
         panel.add(btn_consecionario_coche);
         panel.add(btn_actualizar_coche);
-        panel.add(btn_insertar_venta);
+        panel.add(btn_insertar_distribucion);
         panel.add(btn_eliminar_venta);
         panel.add(btn_actualizar_venta);
         panel.add(btn_cliente);
@@ -88,6 +88,12 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
             }
     });
         
+        btn_insertar_distribucion.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_insertar_distribucionActionPerformed(evt);
+            }
+    });
+        
         
         this.setVisible(true);
     }
@@ -104,7 +110,12 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
     
     private void btn_consecionario_cocheActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
-        Ventana_Concecionario v = new Ventana_Concecionario();
+        Ventana_Concesionario v = new Ventana_Concesionario();
+    }
+    
+    private void btn_insertar_distribucionActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        // TODO add your handling code here:
+        Ventana_distribucion v = new Ventana_distribucion();
     }
     
     @Override
