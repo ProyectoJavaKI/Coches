@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="Java">
-            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/Interfaz/Main.java</file>
-            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/Interfaz/Ventana_cliente.java</file>
-            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/Interfaz/Ventana_principal.java</file>
             <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/Interfaz/Ventana_coche.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/Main.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaCoches.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaClientes.java</file>
         </group>
         <group>
             <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/Ventana_distribucion.java</file>

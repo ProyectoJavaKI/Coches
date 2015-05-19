@@ -9,6 +9,8 @@ public class Main {
 
             VentanaCoches uno = new VentanaCoches();
             uno.setVisible(true);
+//            VentanaClientes uno = new VentanaClientes();
+//            uno.setVisible(true);
         
         
     }

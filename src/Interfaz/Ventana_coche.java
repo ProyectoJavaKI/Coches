@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+
 import javax.swing.table.DefaultTableModel;
 
 public class Ventana_coche  extends JDialog implements ActionListener, WindowListener{
@@ -41,7 +41,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
     private JLabel lbl_insert_coche;
     private JLabel lbl_elim_coche;
     private JLabel lbl_actual_coche;
-    private JTextField txt_doc;
+    
     private JLabel lbl_descrip_tabla;
     private JComboBox cmb_eliminar_coche;
     private JComboBox cmb_actualiza_coche;
@@ -86,7 +86,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         lbl_insert_coche = new JLabel("Crear Nuevo Coche");
         lbl_elim_coche = new JLabel("Eliminar Coche");
         lbl_actual_coche = new JLabel("Actualozar detos de un coche");
-        txt_doc = new JTextField();
+        
         cmb_eliminar_coche = new JComboBox(miComboModel_elimina);
         cmb_actualiza_coche = new JComboBox(miComboModel_actualiza);
         cmb_nombre_coche = new JComboBox(ComboModel_nombre);
@@ -108,7 +108,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         lbl_actual_coche.setBounds(30, 260, 200, 30);
         lbl_actualiza_nombre.setBounds(30, 330, 150, 30);
         lbl_actualiza_modelo.setBounds(30, 370, 150, 30);
-        txt_doc.setBounds(200, 60, 150, 30);
+       
         cmb_modelo_coche.setBounds(200, 140, 150, 30);
         cmb_nombre_coche_actualizar.setBounds(200, 330, 150, 30);
         cmb_modelo_coche_actualizat.setBounds(200, 370, 150, 30);
@@ -136,7 +136,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         panel.add(lbl_actual_coche);
         panel.add(lbl_actualiza_nombre);
         panel.add(lbl_actualiza_modelo);
-        panel.add(txt_doc);
+        
         panel.add(cmb_nombre_coche);
         panel.add(cmb_modelo_coche);
         panel.add(cmb_nombre_coche_actualizar);
@@ -287,13 +287,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
     {
         public boolean isCellEditable (int row, int column)
         {
-           // Aquí devolvemos true o false según queramos que una celda
-           // identificada por fila,columna (row,column), sea o no editable
-            
-//poner en true si queremos que se pueda modificar
-//de momento todo a false            
-//           if (column == 0)
-//              return true;
+          
            return false;
         }
         public Class getColumnClass(int columna)
@@ -310,7 +304,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         // TODO add your handling code here:
         inserta();
         cargar_tabla();
-        txt_doc.setText(null);
+        
         cmb_nombre_coche.setSelectedIndex(0);
         cmb_modelo_coche.setSelectedIndex(0);
     }
