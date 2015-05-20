@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Lynchaniano
  */
-public class VentanaClientes extends JFrame  {
+public class VentanaClientes extends JDialog  {
 
     private ConexionDB conexion = new ConexionDB();//La conexión con la base de datos
 
@@ -92,7 +93,7 @@ public class VentanaClientes extends JFrame  {
         setSize(720, 380);//le doy altura y ancho a la ventana (JFrame)
         setTitle("GESTIÓN CLIENTES");//la titulo
         setResizable(false);//Evito que se pueda redimensionar la ventana
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//Habilito el botón de cierre en la ventana
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);//Habilito el botón de cierre en el Dialog.
         setLocationRelativeTo(null);
 
         /*INICIALIZO UN PANEL CONTENEDOR GENERAL*/

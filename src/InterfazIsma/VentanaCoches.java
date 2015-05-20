@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Lynchaniano
  */
-public class VentanaCoches extends JFrame  {
+public class VentanaCoches extends JDialog  {
 
     private ConexionDB conexion = new ConexionDB();//La conexión con la base de datos
 
@@ -39,7 +39,7 @@ public class VentanaCoches extends JFrame  {
 
     /*UN JPANEL PARA CONTENER TODOS LOS DEMÁS*/
     //JPanel panel;
-    JDialog panel;
+    JPanel panel;
     
 
     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA INSERTAR COCHES*/
@@ -92,13 +92,14 @@ public class VentanaCoches extends JFrame  {
         setSize(720, 360);//le doy altura y ancho a la ventana (JFrame)
         setTitle("GESTIÓN COCHES");//la titulo
         setResizable(false);//Evito que se pueda redimensionar la ventana
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//Habilito el botón de cierre en la ventana
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);//Habilito el botón de cierre en el Dialog.
         setLocationRelativeTo(null);
+        setModal(true);
         
         /*INICIALIZO UN PANEL CONTENEDOR GENERAL*/
-        panel = (JDialog) this.getContentPane();
+        panel = (JPanel) this.getContentPane();
         panel.setLayout(new BorderLayout());//Border... para distribuir el resto de paneles.(EAST,WEST,NORTH,SOUTH,CENTER)
-        panel.setModal(rootPaneCheckingEnabled);
+        
         /*----------------------------------------------------------------------------------------------------------------
          DIBUJO EL PANEL DE QUE ALMACENARÁ LA TABLA CON LOS DATOS DE LOS COCHES
          ------------------------------------------------------------------------------------------------------------------*/

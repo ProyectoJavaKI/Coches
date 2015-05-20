@@ -2,23 +2,20 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="Java">
-            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaVentas.java</file>
-        </group>
         <group>
             <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/Ventana_distribucion.java</file>
             <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/Main.java</file>
             <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/Ventana_principal.java</file>
-            <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/ConexionDB.java</file>
             <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/Ventana_coche.java</file>
         </group>
-<<<<<<< Updated upstream
-=======
         <group name="Java">
             <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/Menu.java</file>
             <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaCoches.java</file>
             <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/PanelTransparente.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/Interfaz/Ventana_distribucion.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaClientes.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaDistribucion.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaVentas.java</file>
         </group>
->>>>>>> Stashed changes
     </open-files>
 </project-private>

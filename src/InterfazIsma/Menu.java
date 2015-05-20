@@ -13,9 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-/**
- * Ejemplo7.
- */
+
 public class Menu {
 
     private static VentanaCoches Coches = new VentanaCoches();
