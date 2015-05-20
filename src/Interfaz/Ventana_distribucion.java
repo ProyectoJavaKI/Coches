@@ -33,23 +33,20 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
     private JScrollPane scl_tabla;
     private JTable tbl_tabla;
     private JButton btn_insertar_distribucion;
-    private JButton btn_eliminar_distribucion;
     private JButton btn_actualizar_distribucion;
-    private JLabel lbl_nuevo_nombre;
-    private JLabel lbl_nuevo_modelo;
-    private JLabel lbl_actualiza_nombre;
-    private JLabel lbl_actualiza_modelo;
+    private JLabel lbl_CIFC;
+    private JLabel lbl_CODCOCHE;
+    private JLabel lbl_CANTIDAD;
+    private JLabel lbl_actualiza_CIFC;
+    private JLabel lbl_actualiza_CODCOCHE;
     private JLabel lbl_insert_distribucion;
-    private JLabel lbl_elim_distribucion;
     private JLabel lbl_actual_distribucion;
-    private JTextField txt_doc;
+    private JTextField txt_CANTIDAD;
     private JLabel lbl_descrip_tabla;
-    private JComboBox cmb_eliminar_distribucion;
-    private JComboBox cmb_actualiza_distribucion;
-    private JComboBox cmb_nombre_distribucion;
-    private JComboBox cmb_modelo_distribucion;
-    private JComboBox cmb_nombre_distribucion_actualizar;
-    private JComboBox cmb_modelo_distribucion_actualizat;
+    private JComboBox cmb_CIFC;
+    private JComboBox cmb_CODCOCHE;
+    private JComboBox cmb_recarga_CIFC;
+    private JComboBox cmb_recarga_CODCOCHE;
     private MiModelo modelo_tabla = new MiModelo();
     private DefaultComboBoxModel miComboModel_elimina = new DefaultComboBoxModel();
     private DefaultComboBoxModel miComboModel_actualiza = new DefaultComboBoxModel();
@@ -76,44 +73,38 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
         tbl_tabla = new JTable(modelo_tabla);
         scl_tabla = new JScrollPane(tbl_tabla);
         btn_insertar_distribucion = new JButton("insertar distribucion");
-        btn_eliminar_distribucion = new JButton("eliminar distribucion");
-        btn_actualizar_distribucion = new JButton("Actualizar detos de distribucion");
+        btn_actualizar_distribucion = new JButton("Actualizar");
         lbl_descrip_tabla = new JLabel("Informacion de los distribucion");
-        lbl_nuevo_nombre = new JLabel("CIFC");
-        lbl_nuevo_modelo = new JLabel("CODCOCHE");
-        lbl_actualiza_nombre = new JLabel("CIFC");
-        lbl_actualiza_modelo = new JLabel("CODCOCHE");
-        lbl_insert_distribucion = new JLabel("Crear Nuevo Coche");
-        lbl_elim_distribucion = new JLabel("Eliminar Coche");
-        lbl_actual_distribucion = new JLabel("Actualozar detos de un distribucion");
-        txt_doc = new JTextField();
-        cmb_eliminar_distribucion = new JComboBox(miComboModel_elimina);
-        cmb_actualiza_distribucion = new JComboBox(miComboModel_actualiza);
-        cmb_nombre_distribucion = new JComboBox(ComboModel_nombre);
-        cmb_modelo_distribucion = new JComboBox(ComboModel_modelo_distribucion);
-        cmb_nombre_distribucion_actualizar = new JComboBox(ComboModel_nombre_actualizarr);
-        cmb_modelo_distribucion_actualizat = new JComboBox(ComboModel_modelo_distribucion_actualizar);
+        lbl_CIFC = new JLabel("CIFC");
+        lbl_CODCOCHE = new JLabel("CODCOCHE");
+        lbl_CANTIDAD = new JLabel("CANTIDAD");
+        lbl_actualiza_CIFC = new JLabel("CIFC");
+        lbl_actualiza_CODCOCHE = new JLabel("CODCOCHE");
+        lbl_insert_distribucion = new JLabel("Crea una Nueva Distribucion");
+        lbl_actual_distribucion = new JLabel("Actualozar datos de un distribucion");
+        txt_CANTIDAD = new JTextField();
+        cmb_CIFC = new JComboBox(ComboModel_nombre);
+        cmb_CODCOCHE = new JComboBox(ComboModel_modelo_distribucion);
+        cmb_recarga_CIFC = new JComboBox(ComboModel_nombre_actualizarr);
+        cmb_recarga_CODCOCHE = new JComboBox(ComboModel_modelo_distribucion_actualizar);
         
         /*damos posicion X,Y, y dimencion X,Y*/
         scl_tabla.setBounds(380, 50, 400, 250);
         btn_insertar_distribucion.setBounds(50, 180, 150, 30);
-        btn_eliminar_distribucion.setBounds(460, 390, 150, 30);
         btn_actualizar_distribucion.setBounds(30, 420, 200, 30);
-        lbl_nuevo_nombre.setBounds(30, 100, 150, 30);
-        lbl_nuevo_modelo.setBounds(30, 140, 150, 30);
+        lbl_CIFC.setBounds(30, 100, 150, 30);
+        lbl_CODCOCHE.setBounds(30, 140, 150, 30);
+        lbl_CANTIDAD.setBounds(30, 60, 150, 30);
         lbl_descrip_tabla.setBounds(400, 20, 150, 30);
         lbl_insert_distribucion.setBounds(40, 30, 150, 30);
-        lbl_elim_distribucion.setBounds(430, 340, 150, 30);
         lbl_actual_distribucion.setBounds(30, 260, 200, 30);
-        lbl_actualiza_nombre.setBounds(30, 330, 150, 30);
-        lbl_actualiza_modelo.setBounds(30, 370, 150, 30);
-        txt_doc.setBounds(200, 60, 150, 30);
-        cmb_modelo_distribucion.setBounds(200, 140, 150, 30);
-        cmb_nombre_distribucion_actualizar.setBounds(200, 330, 150, 30);
-        cmb_modelo_distribucion_actualizat.setBounds(200, 370, 150, 30);
-        cmb_nombre_distribucion.setBounds(200, 100, 150, 30);
-        cmb_eliminar_distribucion.setBounds(550, 340, 90, 30);
-        cmb_actualiza_distribucion.setBounds(30, 290, 90, 30);
+        lbl_actualiza_CIFC.setBounds(30, 330, 150, 30);
+        lbl_actualiza_CODCOCHE.setBounds(30, 370, 150, 30);
+        txt_CANTIDAD.setBounds(200, 60, 150, 30);
+        cmb_CODCOCHE.setBounds(200, 140, 150, 30);
+        cmb_recarga_CIFC.setBounds(200, 330, 150, 30);
+        cmb_recarga_CODCOCHE.setBounds(200, 370, 150, 30);
+        cmb_CIFC.setBounds(200, 100, 150, 30);
         
         /*añadimos datos a la tabla*/
         modelo_tabla.addColumn("CIFC");
@@ -124,23 +115,20 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
         /*añadiendo los elementos al panel*/
         panel.add(scl_tabla);
         panel.add(btn_insertar_distribucion);
-        panel.add(btn_eliminar_distribucion);
         panel.add(btn_actualizar_distribucion);
         panel.add(lbl_descrip_tabla);
-        panel.add(lbl_nuevo_nombre);
-        panel.add(lbl_nuevo_modelo);
+        panel.add(lbl_CIFC);
+        panel.add(lbl_CODCOCHE);
+        panel.add(lbl_CANTIDAD);
         panel.add(lbl_insert_distribucion);
-        panel.add(lbl_elim_distribucion);
         panel.add(lbl_actual_distribucion);
-        panel.add(lbl_actualiza_nombre);
-        panel.add(lbl_actualiza_modelo);
-        panel.add(txt_doc);
-        panel.add(cmb_nombre_distribucion);
-        panel.add(cmb_modelo_distribucion);
-        panel.add(cmb_nombre_distribucion_actualizar);
-        panel.add(cmb_modelo_distribucion_actualizat);
-        panel.add(cmb_eliminar_distribucion);
-        panel.add(cmb_actualiza_distribucion);
+        panel.add(lbl_actualiza_CIFC);
+        panel.add(lbl_actualiza_CODCOCHE);
+        panel.add(txt_CANTIDAD);
+        panel.add(cmb_CIFC);
+        panel.add(cmb_CODCOCHE);
+        panel.add(cmb_recarga_CIFC);
+        panel.add(cmb_recarga_CODCOCHE);
         
 /*añadido del action listener*/        
         btn_insertar_distribucion.addActionListener(new java.awt.event.ActionListener() {
@@ -149,18 +137,13 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
                 btn_insertar_distribucionActionPerformed(evt);
             }
     });
-        btn_eliminar_distribucion.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_eliminar_distribucionActionPerformed(evt);
-            }
-    });
         btn_actualizar_distribucion.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_actualizar_distribucionActionPerformed(evt);
             }
     });
         
-        cmb_nombre_distribucion_actualizar.addActionListener(new java.awt.event.ActionListener() {
+        cmb_recarga_CIFC.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_nombre_distribucion_actualizarActionPerformed(evt);
             }
@@ -183,28 +166,26 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
                 fila[1] =  (String) (rs.getObject("CODCOCHE"));
                 fila[2] =  rs.getObject("CANTIDAD");
                 modelo_tabla.addRow ( fila ); // Añade una fila al final de la tabla
-                cmb_eliminar_distribucion.addItem(fila[0]); // Añade una fila al final combo elimina
-                cmb_actualiza_distribucion.addItem(fila[0]); // Añade una fila al final del combo actualiza
             } //fin while
             consulta="SELECT DISTINCT CIFC FROM `coches`.`distribucion`";
             rs = st.executeQuery(consulta);
             while (rs.next()) {
                 fila[1] =  (String) (rs.getObject("CIFC"));
-                cmb_nombre_distribucion.addItem(fila[1]);
-                cmb_nombre_distribucion_actualizar.addItem(fila[1]);
+                cmb_CIFC.addItem(fila[1]);
+                cmb_recarga_CIFC.addItem(fila[1]);
             }
             
-            consulta="SELECT DISTINCT CODCOCHE FROM `coches`.`distribucion`";
+            consulta="SELECT CODCOCHE FROM `coches`.`coches`";
             rs = st.executeQuery(consulta);
             while (rs.next()) {
                 fila[2] =  (String) (rs.getObject("CODCOCHE"));
-                cmb_modelo_distribucion.addItem(fila[2]);
+                cmb_CODCOCHE.addItem(fila[2]);
             }
-            consulta="SELECT DISTINCT CODCOCHE FROM `coches`.`distribucion` WHERE CIFC="+cmb_nombre_distribucion_actualizar.getSelectedItem();
+            consulta="SELECT DISTINCT CODCOCHE FROM `coches`.`distribucion` WHERE CIFC="+cmb_recarga_CIFC.getSelectedItem();
             rs = st.executeQuery(consulta);
             while (rs.next()) {
                 fila[2] =  (String) (rs.getObject("CODCOCHE"));
-                cmb_modelo_distribucion_actualizat.addItem(fila[2]);
+                cmb_recarga_CODCOCHE.addItem(fila[2]);
             }
             
             st.close();
@@ -217,7 +198,7 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
     {
         Connection miConexion = (Connection) conexion.ConectarMysql();
         
-        cmb_modelo_distribucion_actualizat.removeAllItems();
+        cmb_recarga_CODCOCHE.removeAllItems();
         
         try (Statement st = miConexion.createStatement()) {
             String consulta = "SELECT * FROM `coches`.`distribucion`";
@@ -230,11 +211,11 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
                 fila[2] =  rs.getObject("CANTIDAD");
             } //fin while
             
-            consulta="SELECT DISTINCT CODCOCHE FROM `coches`.`distribucion` WHERE CIFC="+cmb_nombre_distribucion_actualizar.getSelectedItem();
+            consulta="SELECT DISTINCT CODCOCHE FROM `coches`.`distribucion` WHERE CIFC="+cmb_recarga_CIFC.getSelectedItem();
             rs = st.executeQuery(consulta);
             while (rs.next()) {
                 fila[2] =  (String) (rs.getObject("CODCOCHE"));
-                cmb_modelo_distribucion_actualizat.addItem(fila[2]);
+                cmb_recarga_CODCOCHE.addItem(fila[2]);
             }
             
             st.close();
@@ -250,54 +231,49 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
         Connection miConexion = (Connection) conexion.ConectarMysql();
         
         try (Statement st = miConexion.createStatement()) {
-            String consulta = "SELECT * FROM `coches`.`distribucion`";
+            String consulta = "SELECT * FROM `coches`.`distribucion` WHERE CIFC ='"+cmb_CIFC.getSelectedItem()+"'  and CODCOCHE= '"+cmb_CODCOCHE.getSelectedItem()+"'";
+            System.out.println(consulta);
             ResultSet rs = st.executeQuery(consulta);
+            //Preparar el if
             Object [] fila = new Object[1];
-            while (rs.next()) {
-                fila[0] = rs.getObject("CODCOCHE");
-            }
-            int ultimo_num = Integer.parseInt((String) fila[0]);
             
-            String num = "00"+ultimo_num++;
-            System.out.println(num);
-            String insertar = "INSERT INTO `coches`.`distribucion`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
-                        + " VALUES ('"
-                        + "00"+ultimo_num + "', '"
-                        + cmb_nombre_distribucion.getSelectedItem()+ "', '"
-                        + cmb_modelo_distribucion.getSelectedItem()+ "')";
-            st.execute(insertar);
-            modelo_tabla.setRowCount(0);
-            cmb_eliminar_distribucion.removeAllItems();
-            cmb_actualiza_distribucion.removeAllItems();
+            
+//            if(st.execute("0"))
+//            {
+//                while (rs.next()) {
+//                    fila[0] = rs.getObject("CIFC");
+//                }
+//                
+//                int ultimo_num = Integer.parseInt((String) fila[0]);
+//
+//                String num = "00"+ultimo_num++;
+//                System.out.println(num);
+//                String insertar = "INSERT INTO `coches`.`distribucion`(`CIFC`, `CODCOCHE`,`CANTIDAD`)"
+//                            + " VALUES ('"
+//                            + cmb_CIFC.getSelectedItem()+ "', '"
+//                            + cmb_CODCOCHE.getSelectedItem()+ "', '"
+//                            +txt_CANTIDAD.getText()+"')";
+//                st.execute(insertar);
+//                modelo_tabla.setRowCount(0);
+//            }
+//            if(st.execute("1"))
+//            {
+//                while (rs.next()) {
+//                    fila[0] = rs.getObject("CIFC");
+//                }
+//                String update = "UPDATE `concesionarios` SET `CANTIDAD`="+txt_CANTIDAD.getText()+" "
+//                        + "WHERE `CIFC`='"+cmb_CIFC.getSelectedItem()+"' and `CODCOCHE`='"+cmb_CODCOCHE.getSelectedItem()+"')";
+//                st.execute(update);
+//                modelo_tabla.setRowCount(0);
+//            }
             st.close();
+            
         } 
         catch (SQLException ex) {
             Logger.getLogger(Ventana_distribucion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    void eliminar(){
-        Object[] opciones = {"Sí, Eliminar este distribucion",  "No, no eliminar"};
-        int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a eliminar un cohce ¿es ta seguro?: ",
-        "Confirmar eliminación del Coche", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);        
-        if(respuestaUsuario == 0)
-        {
-            Connection miConexion = (Connection) conexion.ConectarMysql();
-            String opt = (String) cmb_eliminar_distribucion.getSelectedItem();
-            try (Statement st = miConexion.createStatement()) {
-
-                String insertar = "DELETE FROM `coches`.`distribucion` WHERE `CODCOCHE` = '"+opt+"'";
-                st.execute(insertar);
-                modelo_tabla.setRowCount(0);
-                cmb_eliminar_distribucion.removeAllItems();
-                cmb_actualiza_distribucion.removeAllItems();
-                st.close();
-            } 
-            catch (SQLException ex) {
-                Logger.getLogger(Ventana_distribucion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
 
     void actualizar(){
         Object[] opciones = {"Sí, actualizar datos de este distribucion",  "No, no actualizar datos de este distribucion"};
@@ -308,11 +284,9 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
             Connection miConexion = (Connection) conexion.ConectarMysql();
             try (Statement st = miConexion.createStatement()) {
 
-                String insertar = "UPDATE `coches`.`distribucion` SET `NOMBRE`='"+cmb_nombre_distribucion_actualizar.getSelectedItem()+"',`MODELO`='"+cmb_modelo_distribucion_actualizat.getSelectedItem()+"' WHERE `CODCOCHE`='"+cmb_actualiza_distribucion.getSelectedItem()+"'";
+                String insertar = "UPDATE `coches`.`distribucion` SET `NOMBRE`='"+cmb_recarga_CIFC.getSelectedItem()+"',`MODELO`='"+cmb_recarga_CODCOCHE.getSelectedItem()+"' WHERE `CODCOCHE`=''";
                 st.executeUpdate(insertar);
                 modelo_tabla.setRowCount(0);
-                cmb_actualiza_distribucion.removeAllItems();
-                cmb_eliminar_distribucion.removeAllItems();
                 st.close();
             } 
             catch (SQLException ex) {
@@ -349,16 +323,11 @@ public class Ventana_distribucion extends JDialog implements ActionListener, Win
         // TODO add your handling code here:
         inserta();
         cargar_tabla();
-        txt_doc.setText(null);
-        cmb_nombre_distribucion.setSelectedIndex(0);
-        cmb_modelo_distribucion.setSelectedIndex(0);
+        txt_CANTIDAD.setText(null);
+        cmb_CIFC.setSelectedIndex(0);
+        cmb_CODCOCHE.setSelectedIndex(0);
     }
     
-    private void btn_eliminar_distribucionActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
-        eliminar();
-        cargar_tabla();
-    }
     
     private void btn_actualizar_distribucionActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
