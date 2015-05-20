@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package InterfazIsma;
 
 import java.awt.BorderLayout;
@@ -44,7 +39,7 @@ public class VentanaDistribucion extends JFrame  {
     /*UN JPANEL PARA CONTENER TODOS LOS DEMÁS*/
     JPanel panel;
     
-    /*ESTO PARA EL FORMULARIO PARA INSERTAR COCHES*/
+    /*ESTO PARA EL FORMULARIO PARA INSERTAR COCHES EN CONCESIONARIOS*/
     JPanel JPanelInsertar;//El Panel que contendrá todos los campos de insercción de datos
     JLabel JLabelCabeceraInsertar;//La cabecera del panel
     JLabel JLabelConcesionarioInsertar;
@@ -168,9 +163,9 @@ public class VentanaDistribucion extends JFrame  {
 
             /*Este while LLena los JCombos con los nombres existentes en la base de datos*/
             while (rs.next()) {
-                fila[1] = (String) (rs.getObject("CIFC"));
+                fila[0] = (String) (rs.getObject("CIFC"));
                 // La fila 1 equivale al NOMBRE
-                JComboConcesionarioInsertar.addItem(fila[1]);
+                JComboConcesionarioInsertar.addItem(fila[0]);
                 
             }
             consulta = "SELECT DISTINCT CODCOCHE FROM `COCHES`.`DISTRIBUCION`";
@@ -178,11 +173,12 @@ public class VentanaDistribucion extends JFrame  {
 
             /*Este while llena los JCombos con los modelos existentes en la base de datos*/
             while (rs.next()) {
-                fila[2] = (String) (rs.getObject("CODCOCHE"));
+                fila[1] = (String) (rs.getObject("CODCOCHE"));
                 // La fila 2 equivale al MODELO
-                JComboCocheInsertar.addItem(fila[2]);
+                JComboCocheInsertar.addItem(fila[1]);
                 
             }
+           
 
             st.close();
         } catch (SQLException ex) {

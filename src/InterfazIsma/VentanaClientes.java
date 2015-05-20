@@ -450,7 +450,7 @@ public class VentanaClientes extends JFrame  {
             return Object.class;
         }
     }
-
   
 
+  
 }
