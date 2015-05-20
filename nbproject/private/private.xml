@@ -12,5 +12,13 @@
             <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/ConexionDB.java</file>
             <file>file:/C:/Users/kevin/Documents/GitHub/Coches/src/Interfaz/Ventana_coche.java</file>
         </group>
+<<<<<<< Updated upstream
+=======
+        <group name="Java">
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/Menu.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/VentanaCoches.java</file>
+            <file>file:/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/InterfazIsma/PanelTransparente.java</file>
+        </group>
+>>>>>>> Stashed changes
     </open-files>
 </project-private>

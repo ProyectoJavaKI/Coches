@@ -76,6 +76,7 @@ public class Menu {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
+                    
                     Distribucion.setVisible(true);
 
                 } catch (Exception err) {

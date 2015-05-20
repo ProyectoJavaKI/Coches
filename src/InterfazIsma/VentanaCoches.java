@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,7 +38,9 @@ public class VentanaCoches extends JFrame  {
     
 
     /*UN JPANEL PARA CONTENER TODOS LOS DEMÁS*/
-    JPanel panel;
+    //JPanel panel;
+    JDialog panel;
+    
 
     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA INSERTAR COCHES*/
     JPanel JPanelInsertar;//El Panel que contendrá todos los campos de insercción de datos
@@ -91,11 +94,11 @@ public class VentanaCoches extends JFrame  {
         setResizable(false);//Evito que se pueda redimensionar la ventana
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//Habilito el botón de cierre en la ventana
         setLocationRelativeTo(null);
-
+        
         /*INICIALIZO UN PANEL CONTENEDOR GENERAL*/
-        panel = (JPanel) this.getContentPane();
+        panel = (JDialog) this.getContentPane();
         panel.setLayout(new BorderLayout());//Border... para distribuir el resto de paneles.(EAST,WEST,NORTH,SOUTH,CENTER)
-
+        panel.setModal(rootPaneCheckingEnabled);
         /*----------------------------------------------------------------------------------------------------------------
          DIBUJO EL PANEL DE QUE ALMACENARÁ LA TABLA CON LOS DATOS DE LOS COCHES
          ------------------------------------------------------------------------------------------------------------------*/
