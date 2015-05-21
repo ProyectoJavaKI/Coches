@@ -25,7 +25,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
 
-public class Ventana_DISTRIBUCION extends JDialog implements ActionListener, WindowListener{
+public class Ventana_Distribucion extends JDialog implements ActionListener, WindowListener{
     private ConexionDB conexion = new ConexionDB();
     
 /*Jpanel que contiene a todo*/
@@ -55,7 +55,7 @@ public class Ventana_DISTRIBUCION extends JDialog implements ActionListener, Win
     private DefaultComboBoxModel ComboModel_nombre_actualizarr = new DefaultComboBoxModel();
     private DefaultComboBoxModel ComboModel_modelo_DISTRIBUCION_actualizar = new DefaultComboBoxModel();
     
-    Ventana_DISTRIBUCION(){
+    Ventana_Distribucion(){
         panel = (JPanel)this.getContentPane();
         panel.setLayout(null);
         
@@ -191,7 +191,7 @@ public class Ventana_DISTRIBUCION extends JDialog implements ActionListener, Win
             st.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_Distribucion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -222,7 +222,7 @@ public class Ventana_DISTRIBUCION extends JDialog implements ActionListener, Win
             st.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_Distribucion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -286,7 +286,7 @@ public class Ventana_DISTRIBUCION extends JDialog implements ActionListener, Win
 
             } 
             catch (SQLException ex) {
-                Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ventana_Distribucion.class.getName()).log(Level.SEVERE, null, ex);
             }
             catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Error en el formato del numero, solo numeros enteros");
@@ -315,7 +315,7 @@ public class Ventana_DISTRIBUCION extends JDialog implements ActionListener, Win
                 st.close();
             } 
             catch (SQLException ex) {
-                Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ventana_Distribucion.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -23,7 +23,7 @@ import javax.swing.JTable;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
-public class Ventana_VENTA extends JDialog implements ActionListener, WindowListener{
+public class Ventana_Venta extends JDialog implements ActionListener, WindowListener{
     private ConexionDB conexion = new ConexionDB();
     
     private JPanel panel;
@@ -47,7 +47,7 @@ public class Ventana_VENTA extends JDialog implements ActionListener, WindowList
     
     private MiModelo modelo_tabla = new MiModelo();
     
-    Ventana_VENTA()
+    Ventana_Venta()
     {
         panel = (JPanel)this.getContentPane();
         panel.setLayout(null);
@@ -162,7 +162,7 @@ public class Ventana_VENTA extends JDialog implements ActionListener, WindowList
             st.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(Ventana_VENTA.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_Venta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -245,7 +245,7 @@ public class Ventana_VENTA extends JDialog implements ActionListener, WindowList
             
         } 
         catch (SQLException ex) {
-            Logger.getLogger(Ventana_VENTA.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_Venta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -268,7 +268,7 @@ public class Ventana_VENTA extends JDialog implements ActionListener, WindowList
             st.close();
         }
         catch (SQLException ex) {
-            Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_Distribucion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

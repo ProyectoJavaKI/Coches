@@ -120,12 +120,12 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
     
     private void btn_insertar_distribucionActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
-        Ventana_DISTRIBUCION v = new Ventana_DISTRIBUCION();
+        Ventana_Distribucion v = new Ventana_Distribucion();
     }
     
     private void btn_VENTASActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
-        Ventana_VENTA v = new Ventana_VENTA();
+        Ventana_Venta v = new Ventana_Venta();
     }
     
     @Override
