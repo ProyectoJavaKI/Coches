@@ -256,7 +256,8 @@ public class Ventana_Venta extends JDialog implements ActionListener, WindowList
         cmb_CODCOCHE.removeAllItems();
         
         try (Statement st = miConexion.createStatement()) {
-            String consulta = "SELECT CODCOCHE FROM `COCHES`.`DISTRIBUCION` WHERE `CIFC`='"+cmb_CIFC.getSelectedItem()+"'";
+            String consulta = "SELECT CODCOCHE FROM `COCHES`.`DISTRIBUCION` "
+                    + "WHERE `CIFC`='"+cmb_CIFC.getSelectedItem()+"'";
             
             ResultSet rs = st.executeQuery(consulta);
             Object [] fila = new Object[1];

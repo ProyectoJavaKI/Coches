@@ -63,7 +63,7 @@ public class Ventana_cliente  extends JDialog implements ActionListener, WindowL
         panel.setLayout(null);
         
         /*dar valores a las caracteristicas del PANEL*/
-        this.setTitle("Tabla Coches"); //titulo de la aplicacion
+        this.setTitle("Tabla CLIENTES"); //titulo de la aplicacion
         
 /*cuando este todo listo quitar el comentario de resizable*/        
 //        this.setResizable(false);// no permite redimencionar
@@ -126,7 +126,7 @@ public class Ventana_cliente  extends JDialog implements ActionListener, WindowL
         cmb_actualiza_cliente.setBounds(30, 290, 90, 30);
         
         /*añadimos datos a la tabla*/
-        modelo.addColumn("DNI");
+        modelo.addColumn("ID");
         modelo.addColumn("nombre");
         modelo.addColumn("apellido");
         modelo.addColumn("ciudad");
@@ -246,6 +246,9 @@ public class Ventana_cliente  extends JDialog implements ActionListener, WindowL
         "Confirmar eliminación del Coche", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);        
         if(respuestaUsuario == 0)
         {
+//            String consulta = "SELECT * FRROM `COCHES`.`DISTRIBUCION` WHERE `DNI`='"+cmb_eliminar_cliente+"'";
+            
+            
             Connection miConexion = (Connection) conexion.ConectarMysql();
             String opt = (String) cmb_eliminar_cliente.getSelectedItem();
             try (Statement st = miConexion.createStatement()) {

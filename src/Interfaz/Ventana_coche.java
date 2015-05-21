@@ -122,6 +122,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         modelo_tabla.addColumn("modelo");
 /*Este apartado se rellena con la informacion de la bbdd (con una sentencia select*/
         cargar_tabla();
+        recarga();
         /*añadiendo los elementos al panel*/
         panel.add(scl_tabla);
         panel.add(btn_insertar_coche);
@@ -161,6 +162,11 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
                 btn_actualizar_cocheActionPerformed(evt);
             }
     });
+//        cmb_nombre_coche.addActionListener(new java.awt.event.ActionListener() {
+//        public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                cmb_modelo_copche_actualizarActionPerformed(evt);
+//            }
+//    });
         this.setVisible(true);//el set visible del panel_maestro debe de ser el ultimo siempre
     }
 
@@ -212,25 +218,61 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         Connection miConexion = (Connection) conexion.ConectarMysql();
         
         try (Statement st = miConexion.createStatement()) {
-            String consulta = "SELECT * FROM `coches`.`coches`";
+            String consulta = "SELECT *,count(`NOMBRE`) FROM `coches`.`coches`";
             ResultSet rs = st.executeQuery(consulta);
-            Object [] fila = new Object[1];
+            Object [] fila = new Object[4];
             while (rs.next()) {
                 fila[0] = rs.getObject("CODCOCHE");
+                fila[1] = rs.getObject("NOMBRE");
+                fila[2] = rs.getObject("MODELO");
             }
             int ultimo_num = Integer.parseInt((String) fila[0]);
             
             ultimo_num++;
-            String insertar = "INSERT INTO `coches`.`coches`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
-                        + " VALUES ('"
-                        + "0"+ultimo_num + "', '"
-                        + cmb_nombre_coche.getSelectedItem()+ "', '"
-                        + cmb_modelo_coche.getSelectedItem()+ "')";
-            st.execute(insertar);
-            modelo_tabla.setRowCount(0);
-            cmb_eliminar_coche.removeAllItems();
-            cmb_actualiza_coche.removeAllItems();
-            st.close();
+            String nuevo_coche = null;
+            if(ultimo_num < 9)
+            {
+                nuevo_coche= "00"+ultimo_num;
+            }
+            if(ultimo_num > 9 && ultimo_num <= 99)
+            {
+                nuevo_coche= "0"+ultimo_num;
+            }
+            if(ultimo_num > 99)
+            {
+                nuevo_coche= ""+ultimo_num;
+            }
+            consulta = "SELECT DISTINCT  count(`NOMBRE`) FROM `coches`.`coches` "
+                    + "WHERE `NOMBRE` = '"+cmb_modelo_coche.getSelectedItem()+"'";
+            while (rs.next()) {
+                fila[3] = rs.getObject(1);
+            }
+            System.out.println(fila[3]+" fila 3");
+            
+                if(fila[3] == null)
+                {
+                    System.out.println("INSERT");
+//                    String insertar = "INSERT INTO `coches`.`coches`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
+//                                + " VALUES ('"
+//                                + nuevo_coche + "', '"
+//                                + cmb_nombre_coche.getSelectedItem()+ "', '"
+//                                + cmb_modelo_coche.getSelectedItem()+ "')";
+//                    st.execute(insertar);
+                    modelo_tabla.setRowCount(0);
+                    cmb_eliminar_coche.removeAllItems();
+                    cmb_actualiza_coche.removeAllItems();
+                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Este coche ya ga sido añadido antes");
+                    
+                    modelo_tabla.setRowCount(0);
+                    cmb_eliminar_coche.removeAllItems();
+                    cmb_actualiza_coche.removeAllItems();
+                }
+            
+                st.close();
         } 
         catch (SQLException ex) {
             Logger.getLogger(Ventana_coche.class.getName()).log(Level.SEVERE, null, ex);
@@ -260,6 +302,33 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         }
     }
 
+    void recarga()
+    {
+        Connection miConexion = (Connection) conexion.ConectarMysql();
+        
+        cmb_modelo_coche.removeAllItems();
+        
+        try (Statement st = miConexion.createStatement()) {
+            String consulta = "SELECT DISTINCT * FROM `COCHES`.`COCHES` "
+                    + "WHERE `NOMBRE` != '"+cmb_nombre_coche.getSelectedItem()+"'";
+            
+            ResultSet rs = st.executeQuery(consulta);
+            Object [] fila = new Object[3];
+            while (rs.next()) {
+                fila[0] = (String) (rs.getObject("CODCOCHE"));
+                fila[1] =  (String) (rs.getObject("NOMBRE"));
+                fila[2] =  rs.getObject("MODELO");
+                cmb_modelo_coche.addItem(fila[2]);
+            } //fin while
+            
+            st.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    
     void actualizar(){
         Object[] opciones = {"Sí, actualizar datos de este coche",  "No, no actualizar datos de este coche"};
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a actualizar la informacion de un cohce ¿es ta seguro?: ",
@@ -321,6 +390,10 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
         cargar_tabla();
     }
     
+    private void cmb_modelo_copche_actualizarActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        // TODO add your handling code here:
+        recarga();
+    }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
