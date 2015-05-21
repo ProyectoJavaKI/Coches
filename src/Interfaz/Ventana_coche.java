@@ -242,14 +242,16 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
             {
                 nuevo_coche= ""+ultimo_num;
             }
-            consulta = "SELECT DISTINCT  count(`NOMBRE`) FROM `coches`.`coches` "
-                    + "WHERE `NOMBRE` = '"+cmb_modelo_coche.getSelectedItem()+"'";
+            consulta = "SELECT count(`NOMBRE`) FROM `coches`.`coches` "
+                    + "WHERE `NOMBRE` = '"+cmb_nombre_coche.getSelectedItem()+"'"
+                    + "AND `MODELO` ='"+cmb_modelo_coche.getSelectedItem()+"'";
+            rs = st.executeQuery(consulta);
             while (rs.next()) {
                 fila[3] = rs.getObject(1);
             }
-            System.out.println(fila[3]+" fila 3");
+            int respuesta = Integer.parseInt(""+fila[3]);
             
-                if(fila[3] == null)
+                if(respuesta==0)
                 {
                     System.out.println("INSERT");
 //                    String insertar = "INSERT INTO `coches`.`coches`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
@@ -324,7 +326,7 @@ public class Ventana_coche  extends JDialog implements ActionListener, WindowLis
             st.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_coche.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

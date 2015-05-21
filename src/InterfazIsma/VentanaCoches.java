@@ -341,22 +341,43 @@ public final class VentanaCoches extends JDialog {
             Connection miConexion = (Connection) conexion.ConectarMysql();
 
             try (Statement st = miConexion.createStatement()) {
+                
                 String consulta = "SELECT * FROM `coches`.`coches`";
                 ResultSet rs = st.executeQuery(consulta);
-                Object[] fila = new Object[1];
+                Object[] fila = new Object[2];
                 while (rs.next()) {
                     fila[0] = rs.getObject("CODCOCHE");
                 }
                 int ultimo_num = Integer.parseInt((String) fila[0]);
-
                 ultimo_num++;
-                insertar = "INSERT INTO `coches`.`coches`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
-                        + " VALUES ('"
-                        + "0" + ultimo_num + "', '"
-                        + JComboNombreInsertar.getSelectedItem() + "', '"
-                        + JComboModeloInsertar.getSelectedItem() + "')";
-                st.execute(insertar);
-
+                String nuevo_coche = null;
+                if(ultimo_num < 9){nuevo_coche= "00"+ultimo_num;}
+                if(ultimo_num > 9 && ultimo_num <= 99){nuevo_coche= "0"+ultimo_num;}
+                
+                consulta = "SELECT count(`NOMBRE`) FROM `coches`.`coches` "
+                    + "WHERE `NOMBRE` = '"+JComboNombreInsertar.getSelectedItem()+"'"
+                    + "AND `MODELO` ='"+JComboModeloInsertar.getSelectedItem()+"'";
+                rs = st.executeQuery(consulta);
+                while (rs.next()) {
+                    fila[1] = rs.getObject(1);
+                }
+                int respuesta = Integer.parseInt(""+fila[1]);
+            
+                if(respuesta==0)
+                {
+                    insertar = "INSERT INTO `coches`.`coches`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
+                            + " VALUES ('"
+                            + nuevo_coche + "', '"
+                            + JComboNombreInsertar.getSelectedItem() + "', '"
+                            + JComboModeloInsertar.getSelectedItem() + "')";
+                    st.execute(insertar);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Este coche ya ha sido añadido antes");
+                    
+                
+                }
                 st.close();
             } catch (SQLException ex) {
                 Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
