@@ -115,7 +115,7 @@ public final class VentanaCoches extends JDialog {
         panel.add("West", JPanelInsertar);//Lo situo a la izquierda del Panel General
 
         /*INSERTO LOS CAMPOS DE INSERTAR*/
-        JLabelCabeceraInsertar = new JLabel("INSERTAR");
+        JLabelCabeceraInsertar = new JLabel("AÑADIR");
         JLabelCabeceraInsertar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraInsertar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelInsertar.add(JLabelCabeceraInsertar);
@@ -161,7 +161,7 @@ public final class VentanaCoches extends JDialog {
         panel.add("East", JPanelModificar);//Lo situo a la izquierda del Panel General
 
         /*INSERTO LOS CAMPOS PARA MODIFICACIÓN*/
-        JLabelCabeceraModificar = new JLabel("MODIFICAR");
+        JLabelCabeceraModificar = new JLabel("EDITAR");
         JLabelCabeceraModificar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraModificar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelModificar.add(JLabelCabeceraModificar);
@@ -357,6 +357,9 @@ public final class VentanaCoches extends JDialog {
                 JComboNombreModificar.removeAllItems();
                 st.close();
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "ESTE COCHE ESTÁ EN VENTA EN CONCESIONARIOS, POR TANTO NO PUEDE ELIMINARSE HASTA QUE SE ACABEN SUS EXISTENCIAS.");
                 Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

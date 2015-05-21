@@ -69,7 +69,7 @@ public class Ventana_Venta extends JDialog implements ActionListener, WindowList
         cmb_CODCOCHE = new JComboBox(ComboModel_CODCOCHE);
         cmb_DNI = new JComboBox(ComboModel_DNI);
         cmb_COLOR = new JComboBox(ComboModel_COLOR);
-        btn_insertar = new JButton("INSERTAR");
+        btn_insertar = new JButton("VENDER");
         
         scl_tabla.setBounds(380, 50, 400, 250);
         lbl_INDEX.setBounds(30, 30, 250, 30);

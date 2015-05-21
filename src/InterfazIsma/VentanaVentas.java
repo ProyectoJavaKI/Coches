@@ -67,6 +67,7 @@ public class VentanaVentas extends JDialog {
         setResizable(false);//Evito que se pueda redimensionar la ventana
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);//Habilito el botón de cierre en el Dialog.
         setLocationRelativeTo(null);
+        setModal(true);
 
         /*INICIALIZO UN PANEL CONTENEDOR GENERAL*/
         panel = (JPanel) this.getContentPane();
@@ -95,7 +96,7 @@ public class VentanaVentas extends JDialog {
         panel.add("West", JPanelInsertar);//Lo situo a la izquierda del Panel General
 
         /*INSERTO LOS CAMPOS DE INSERTAR*/
-        JLabelCabeceraInsertar = new JLabel("INSERTAR");
+        JLabelCabeceraInsertar = new JLabel("VENDER");
         JLabelCabeceraInsertar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraInsertar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelInsertar.add(JLabelCabeceraInsertar);

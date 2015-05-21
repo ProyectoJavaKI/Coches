@@ -94,6 +94,7 @@ public final class VentanaClientes extends JDialog {
         setResizable(false);//Evito que se pueda redimensionar la ventana
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);//Habilito el botón de cierre en el Dialog.
         setLocationRelativeTo(null);
+        setModal(true);
 
         /*INICIALIZO UN PANEL CONTENEDOR GENERAL*/
         panelClientes = (JPanel) this.getContentPane();
@@ -122,7 +123,7 @@ public final class VentanaClientes extends JDialog {
         panelClientes.add("West", JPanelInsertar);//Lo situo a la izquierda del Panel General
 
         /*INSERTAMOS LOS CAMPOS DE INSERCIÓN*/
-        JLabelCabeceraInsertar = new JLabel("INSERTAR");
+        JLabelCabeceraInsertar = new JLabel("ALTA");
         JLabelCabeceraInsertar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraInsertar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelInsertar.add(JLabelCabeceraInsertar);
@@ -200,7 +201,7 @@ public final class VentanaClientes extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Inserta_Cliente();
-                    
+
                     Cargar_Tabla_Clientes();
                     JTextFieldNombreInsertar.setText(null);
                     JTextFieldApellidoInsertar.setText(null);
@@ -235,7 +236,7 @@ public final class VentanaClientes extends JDialog {
         panelClientes.add("East", JPanelModificar);//Lo situo a la derecha del Panel General
 
         /*INSERTAMOS LOS CAMPOS DE MODIFICACIÓN*/
-        JLabelCabeceraModificar = new JLabel("MODIFICAR");
+        JLabelCabeceraModificar = new JLabel("EDICIÓN");
         JLabelCabeceraModificar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraModificar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelModificar.add(JLabelCabeceraModificar);
@@ -252,12 +253,12 @@ public final class VentanaClientes extends JDialog {
 
         JTextFieldNombreModificar = new JTextField();
         /*PROHÍBO AL USUARIO EL USO DE CARACTERES NUMÉRICOS Y LÍMITA SU NÚMERO*/
-        JTextFieldNombreModificar.addKeyListener(new KeyAdapter() { 
+        JTextFieldNombreModificar.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 int limitador = 20;
                 char ch = e.getKeyChar();
-                if ((Character.isDigit(ch))|| (JTextFieldNombreModificar.getText().length()>=limitador))  {
+                if ((Character.isDigit(ch)) || (JTextFieldNombreModificar.getText().length() >= limitador)) {
                     e.consume();
                 }
             }
@@ -269,12 +270,12 @@ public final class VentanaClientes extends JDialog {
 
         JTextFieldApellidoModificar = new JTextField();
         /*PROHÍBO AL USUARIO EL USO DE CARACTERES NUMÉRICOS Y LÍMITA SU NÚMERO*/
-        JTextFieldApellidoModificar.addKeyListener(new KeyAdapter() { 
+        JTextFieldApellidoModificar.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 int limitador = 12;
                 char ch = e.getKeyChar();
-                if ((Character.isDigit(ch))|| (JTextFieldApellidoModificar.getText().length()>=limitador))  {
+                if ((Character.isDigit(ch)) || (JTextFieldApellidoModificar.getText().length() >= limitador)) {
                     e.consume();
                 }
             }
@@ -286,12 +287,12 @@ public final class VentanaClientes extends JDialog {
 
         JTextFieldCiudadModificar = new JTextField();
         /*PROHÍBO AL USUARIO EL USO DE CARACTERES NUMÉRICOS Y LÍMITA SU NÚMERO*/
-        JTextFieldCiudadModificar.addKeyListener(new KeyAdapter() { 
+        JTextFieldCiudadModificar.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 int limitador = 12;
                 char ch = e.getKeyChar();
-                if ((Character.isDigit(ch))|| (JTextFieldCiudadModificar.getText().length()>=limitador))  {
+                if ((Character.isDigit(ch)) || (JTextFieldCiudadModificar.getText().length() >= limitador)) {
                     e.consume();
                 }
             }
@@ -308,7 +309,7 @@ public final class VentanaClientes extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Modificar_Cliente();
-                    
+
                     Cargar_Tabla_Clientes();
                     JTextFieldNombreModificar.setText(null);
                     JTextFieldApellidoModificar.setText(null);
@@ -347,7 +348,7 @@ public final class VentanaClientes extends JDialog {
         JpanelEliminarCliente.setBorder(new EmptyBorder(10, 10, 10, 10));//Le pongo unos Borders para separarlos un poco de la ventana (JFrame).
         panelClientes.add("South", JpanelEliminarCliente);//Lo situo abajo del BorderLayout
 
-        JLabelCabeceraEliminar = new JLabel("ELIMINAR");
+        JLabelCabeceraEliminar = new JLabel("BAJA");
         JLabelCabeceraEliminar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 25));
         JLabelCabeceraEliminar.setForeground(Color.decode("#000000"));//Personaliza el color del botón por código RGB
         JpanelEliminarCliente.add(JLabelCabeceraEliminar);
@@ -367,7 +368,7 @@ public final class VentanaClientes extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Eliminar_Cliente();
-                    
+
                     Cargar_Tabla_Clientes();
 
                 } catch (Exception err) {
@@ -462,6 +463,9 @@ public final class VentanaClientes extends JDialog {
                 JComboDNI.removeAllItems();
                 st.close();
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "ESTE CLIENTE HA REALIZADO COMPRAS,POR TANTO NO PUEDE ELIMINARSE. SI LO BORRAMOS PERDEREMOS LOS DATOS DE LA VENTA");
                 Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
                 ModeloTablaClientes.setRowCount(0);
                 JComboEliminarCliente.removeAllItems();
