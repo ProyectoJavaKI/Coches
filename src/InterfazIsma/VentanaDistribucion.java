@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +29,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -60,13 +64,17 @@ public final class VentanaDistribucion extends JDialog {
     CustomDefaultTableModel ModeloTablaDistribucion;
     JTable TablaDistribucion;
 
+    /*ELEMENTOS PARA LA IMPRESIÓN*/
+    JButton JButtonImprimir;
+    File xls;
+
     /*Estos JLabel son para ajustar los campos en los GridLayouts*/
     JLabel RCarro, RCarro2, RCarro3, RCarro4, RCarro5;
 
     public VentanaDistribucion() {
         super();//Heredo el JFrame
         /*DEFINO LA VENTANA MADRE*/
-        setSize(600, 280);//le doy altura y ancho a la ventana (JFrame)
+        setSize(600, 300);//le doy altura y ancho a la ventana (JFrame)
         setTitle("DISTRIBUCIÓN");//la titulo
         setResizable(false);//Evito que se pueda redimensionar la ventana
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);//Habilito el botón de cierre en el Dialog.
@@ -85,7 +93,7 @@ public final class VentanaDistribucion extends JDialog {
         JScrollPaneTablaDistribucion = new JScrollPane(TablaDistribucion);
         panel.add("Center", JScrollPaneTablaDistribucion);//Lo situo al centro del BorderLayout
         ModeloTablaDistribucion.addColumn("CIFC");
-        ModeloTablaDistribucion.addColumn("CODCOCHE");
+        ModeloTablaDistribucion.addColumn("COCHE");
         ModeloTablaDistribucion.addColumn("CANTIDAD");
 
 
@@ -103,24 +111,25 @@ public final class VentanaDistribucion extends JDialog {
         JLabelCabeceraInsertar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
         JLabelCabeceraInsertar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelInsertar.add(JLabelCabeceraInsertar);
-        
-        RCarro = new JLabel(" ");JPanelInsertar.add(RCarro);
-        
-        
+
+        RCarro = new JLabel(" ");
+        JPanelInsertar.add(RCarro);
+
         ModeloConcesionarioInsertar = new DefaultComboBoxModel();
         JLabelConcesionarioInsertar = new JLabel("CIFC");
         JPanelInsertar.add(JLabelConcesionarioInsertar);
         JComboConcesionarioInsertar = new JComboBox(ModeloConcesionarioInsertar);
         JPanelInsertar.add(JComboConcesionarioInsertar);
-        RCarro4 = new JLabel(" ");JPanelInsertar.add(RCarro4);
-        
+        RCarro4 = new JLabel(" ");
+        JPanelInsertar.add(RCarro4);
 
         ModeloCocheInsertar = new DefaultComboBoxModel();
-        JLabelCocheInsertar = new JLabel("COCHE");
+        JLabelCocheInsertar = new JLabel("CODCOCHE");
         JPanelInsertar.add(JLabelCocheInsertar);
         JComboCocheInsertar = new JComboBox(ModeloCocheInsertar);
         JPanelInsertar.add(JComboCocheInsertar);
-        RCarro5 = new JLabel(" ");JPanelInsertar.add(RCarro5);
+        RCarro5 = new JLabel(" ");
+        JPanelInsertar.add(RCarro5);
 
         JlabelCantidadInsertar = new JLabel("CANTIDAD");
         JPanelInsertar.add(JlabelCantidadInsertar);
@@ -152,10 +161,24 @@ public final class VentanaDistribucion extends JDialog {
                     Insertar_Coche();
                     LimpiarJTable();
                     Cargar_Tabla_Distribucion();
-                    JTextFieldCantidadInsertar.setText(null);
-                    JComboConcesionarioInsertar.setSelectedIndex(0);
-                    JComboCocheInsertar.setSelectedIndex(0);
-
+              
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        /*EL BOTÓN PARA IMPRIMIR (Lo pondré en el Panel de eliminación*/
+        xls = new File("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/ficheros/ficheroDistribucion.xls");
+        JButtonImprimir = new JButton("IMPRIMIR");
+        JPanelInsertar.add(JButtonImprimir);
+        /* ACTIVO EL LISTENER*/
+        JButtonImprimir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    exportarjTable(TablaDistribucion, xls);
+                    LimpiarJTable();
+                    Cargar_Tabla_Distribucion();
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -218,62 +241,61 @@ public final class VentanaDistribucion extends JDialog {
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "¿SEGURO QUE QUIERES AÑADIR DATOS?: ",
                 "CONFIRMAR", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
         if (respuestaUsuario == 0) {
-            Connection miConexion = (Connection) conexion.ConectarMysql();
+            if (!JTextFieldCantidadInsertar.getText().isEmpty()) {
+                Connection miConexion = (Connection) conexion.ConectarMysql();
 
-            try (Statement st = miConexion.createStatement()) {
+                try (Statement st = miConexion.createStatement()) {
 
-                String consulta = "SELECT CIFC, CODCOCHE, CANTIDAD, count(CANTIDAD) from `COCHES`.`DISTRIBUCION` "
-                        + "WHERE `CIFC` = '" + JComboConcesionarioInsertar.getSelectedItem() + "' "
-                        + "AND `CODCOCHE` = '" + JComboCocheInsertar.getSelectedItem() + "'";
+                    String consulta = "SELECT CIFC, CODCOCHE, CANTIDAD, count(CANTIDAD) from `COCHES`.`DISTRIBUCION` "
+                            + "WHERE `CIFC` = '" + JComboConcesionarioInsertar.getSelectedItem() + "' "
+                            + "AND `CODCOCHE` = '" + JComboCocheInsertar.getSelectedItem() + "'";
 
-                Object[] fila = new Object[4];
+                    Object[] fila = new Object[4];
 
-                ResultSet rs = st.executeQuery(consulta);
+                    ResultSet rs = st.executeQuery(consulta);
 
-                while (rs.next()) {
-                    fila[0] = (String) (rs.getObject("CIFC"));
-                    fila[1] = (String) (rs.getObject("CODCOCHE"));
-                    fila[2] = rs.getObject("CANTIDAD");
-                    fila[3] = rs.getObject(4);
+                    while (rs.next()) {
+                        fila[0] = (String) (rs.getObject("CIFC"));
+                        fila[1] = (String) (rs.getObject("CODCOCHE"));
+                        fila[2] = rs.getObject("CANTIDAD");
+                        fila[3] = rs.getObject(4);
+                    }
+                    int numero = Integer.parseInt(fila[3] + "");
+
+                    rs.beforeFirst();
+
+                    if (numero == 0) {
+                        System.out.println("insert");
+                        insertar = "INSERT INTO `COCHES`.`DISTRIBUCION`(`CIFC`, `CODCOCHE`,`CANTIDAD`)"
+                                + " VALUES ('"
+                                + JComboConcesionarioInsertar.getSelectedItem() + "', '"
+                                + JComboCocheInsertar.getSelectedItem() + "', '"
+                                + JTextFieldCantidadInsertar.getText() + "')";
+                        st.execute(insertar);
+                        ModeloTablaDistribucion.setRowCount(0);
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "SE SUMARÁ LA CANTIDAD AL COCHE EXISTENTE");
+
+                        int num = Integer.parseInt(JTextFieldCantidadInsertar.getText());
+                        int cantidad = (int) fila[2];
+                        int suma = num + cantidad;
+
+                        update = "UPDATE `DISTRIBUCION` SET `CANTIDAD`=" + suma + " "
+                                + "WHERE `CIFC`='" + JComboConcesionarioInsertar.getSelectedItem() + "' "
+                                + "and `CODCOCHE`='" + JComboCocheInsertar.getSelectedItem() + "'";
+                        System.out.println(update);
+                        st.execute(update);
+                        ModeloTablaDistribucion.setRowCount(0);
+                    }
+                    st.close();
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(VentanaDistribucion.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                int numero = Integer.parseInt(fila[3] + "");
-
-                rs.beforeFirst();
-
-                if (numero == 0) {
-                    System.out.println("insert");
-                    insertar = "INSERT INTO `COCHES`.`DISTRIBUCION`(`CIFC`, `CODCOCHE`,`CANTIDAD`)"
-                            + " VALUES ('"
-                            + JComboConcesionarioInsertar.getSelectedItem() + "', '"
-                            + JComboCocheInsertar.getSelectedItem() + "', '"
-                            + JTextFieldCantidadInsertar.getText() + "')";
-                    st.execute(insertar);
-                    ModeloTablaDistribucion.setRowCount(0);
-                } else {
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "SE SUMARÁ LA CANTIDAD AL COCHE EXISTENTE");
-
-                    int num = Integer.parseInt(JTextFieldCantidadInsertar.getText());
-                    int cantidad = (int) fila[2];
-                    int suma = num + cantidad;
-
-                    update = "UPDATE `DISTRIBUCION` SET `CANTIDAD`=" + suma + " "
-                            + "WHERE `CIFC`='" + JComboConcesionarioInsertar.getSelectedItem() + "' "
-                            + "and `CODCOCHE`='" + JComboCocheInsertar.getSelectedItem() + "'";
-                    System.out.println(update);
-                    st.execute(update);
-                    ModeloTablaDistribucion.setRowCount(0);
-                }
-
-                JComboConcesionarioInsertar.removeAllItems();
-                JComboCocheInsertar.removeAllItems();
-                ModeloTablaDistribucion.setRowCount(0);
-
-                st.close();
-
-            } catch (SQLException ex) {
-                Logger.getLogger(VentanaDistribucion.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                JOptionPane.showMessageDialog(null, "RELLENE TODOS LOS CAMPOS ANTES DE ACEPTAR");
             }
         }
     }
@@ -306,6 +328,28 @@ public final class VentanaDistribucion extends JDialog {
         for (int i = 0; i < a; i++) {
             ModeloTablaDistribucion.removeRow(0);
         }
+        JComboConcesionarioInsertar.removeAllItems();
+        JComboCocheInsertar.removeAllItems();
+        JTextFieldCantidadInsertar.setText(null);
+        
+        
+    }
+
+    public void exportarjTable(JTable tabla, File ficheroXLS) throws IOException {
+        TableModel modelo = tabla.getModel();
+        FileWriter fichero = new FileWriter(ficheroXLS);
+
+        for (int i = 0; i < modelo.getColumnCount(); i++) {
+            fichero.write(modelo.getColumnName(i) + "\t");
+        }
+        fichero.write("\n");
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fichero.write(modelo.getValueAt(i, j).toString() + "\t");
+            }
+            fichero.write("\n");
+        }
+        fichero.close();
     }
 
 }

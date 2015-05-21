@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,12 +26,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author Lynchaniano
  */
-public class VentanaVentas extends JDialog {
+public final class VentanaVentas extends JDialog {
 
     private ConexionDB conexion = new ConexionDB();//La conexión con la base de datos
 
@@ -58,6 +62,10 @@ public class VentanaVentas extends JDialog {
     CustomDefaultTableModel ModeloTablaVentas;
     JTable TablaVentas;
 
+    /*ELEMENTOS PARA LA IMPRESIÓN*/
+    JButton JButtonImprimir;
+    File xls;
+
     /* EN EL CONSTRUCTOR INICIALIZAMOS TODOS LOS PANELES QUE RELLENARÁN EL FRAME SUS COMPONENTES */
     public VentanaVentas() {
         super();//Heredo el JFrame
@@ -82,7 +90,7 @@ public class VentanaVentas extends JDialog {
         panel.add("Center", JScrollPaneTablaVentas);//Lo situo al centro del BorderLayout
         ModeloTablaVentas.addColumn("CIFC");
         ModeloTablaVentas.addColumn("DNI");
-        ModeloTablaVentas.addColumn("CODCOCHE");
+        ModeloTablaVentas.addColumn("COCHE");
         ModeloTablaVentas.addColumn("COLOR");
 
 
@@ -110,7 +118,7 @@ public class VentanaVentas extends JDialog {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    recarga_Combo_Concesionarios();
+                    Recarga_Combo_Concesionarios();
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -146,11 +154,26 @@ public class VentanaVentas extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Insertar_Ventas();
+                    LimpiarJTable();
                     Cargar_Tabla_Ventas();
-                    JComboConcesionarioInsertar.setSelectedIndex(0);
-                    JComboDNIInsertar.setSelectedIndex(0);
-                    JComboCocheInsertar.setSelectedIndex(0);
-                    JComboColorInsertar.setSelectedIndex(0);
+
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        /*EL BOTÓN PARA IMPRIMIR (Lo pondré en el Panel de eliminación*/
+        xls = new File("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/ficheros/ficheroVentas.xls");
+        JButtonImprimir = new JButton("IMPRIMIR");
+        JPanelInsertar.add(JButtonImprimir);
+        /* ACTIVO EL LISTENER*/
+        JButtonImprimir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    exportarjTable(TablaVentas, xls);
+                    LimpiarJTable();
+                    Cargar_Tabla_Ventas();
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
@@ -160,6 +183,7 @@ public class VentanaVentas extends JDialog {
 
         /*POR ÚLTIMO, RELLENAMOS LA TABLA CON DATOS DE LA BASE*/
         Cargar_Tabla_Ventas();
+        Recarga_Combo_Concesionarios();
 
     }
     /*MÉTODO PARA CARGAR DATOS AL JTABLE A TRAVÉS DE CONSULTA SQL
@@ -272,7 +296,7 @@ public class VentanaVentas extends JDialog {
                     int cant = Integer.parseInt("" + cantidad[0]);
                     if (cant > 0) {
 
-                        System.out.println("antes update");
+                        
                         cant--;
                         String update = "UPDATE `COCHES`.`DISTRIBUCION` SET `CANTIDAD`=" + cant + " "
                                 + "WHERE `CIFC`='" + JComboConcesionarioInsertar.getSelectedItem() + "' "
@@ -293,16 +317,9 @@ public class VentanaVentas extends JDialog {
                         ModeloTablaVentas.setRowCount(0);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Este coche ya he sido vendido ha este cliente");
+                    JOptionPane.showMessageDialog(null, "ESTA VENTA YA SE HA REALIZADO CON ANTERIORIDAD");
                 }
             }
-
-            JComboConcesionarioInsertar.removeAllItems();
-            JComboDNIInsertar.removeAllItems();
-            JComboCocheInsertar.removeAllItems();
-            JComboColorInsertar.removeAllItems();
-            ModeloTablaVentas.setRowCount(0);
-
             st.close();
 
         } catch (SQLException ex) {
@@ -310,7 +327,8 @@ public class VentanaVentas extends JDialog {
         }
     }
     /*MÉTODO UTILIZADO PARA LA CORRECTA ACTUALIZACIÓN DEL COMBO CON LOS CIFC*/
-    void recarga_Combo_Concesionarios() {
+
+    void Recarga_Combo_Concesionarios() {
         Connection miConexion = (Connection) conexion.ConectarMysql();
 
         JComboCocheInsertar.removeAllItems();
@@ -338,6 +356,7 @@ public class VentanaVentas extends JDialog {
             return false;
         }
 
+        @Override
         public Class getColumnClass(int columna) {
             if (columna == 0) {
                 return String.class;
@@ -353,6 +372,39 @@ public class VentanaVentas extends JDialog {
             }
             return Object.class;
         }
+    }
+
+    public void exportarjTable(JTable tabla, File ficheroXLS) throws IOException {
+        TableModel modelo = tabla.getModel();
+        FileWriter fichero = new FileWriter(ficheroXLS);
+
+        for (int i = 0; i < modelo.getColumnCount(); i++) {
+            fichero.write(modelo.getColumnName(i) + "\t");
+        }
+        fichero.write("\n");
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fichero.write(modelo.getValueAt(i, j).toString() + "\t");
+            }
+            fichero.write("\n");
+        }
+        fichero.close();
+    }
+    /*RESETEAR DATOS DE JTABLE (Para poder insertar nuevos)*/
+
+    void LimpiarJTable() {
+        int a = ModeloTablaVentas.getRowCount();
+        for (int i = 0; i < a; i++) {
+            ModeloTablaVentas.removeRow(0);
+        }
+//        JComboConcesionarioInsertar.setSelectedIndex(0);
+//        JComboDNIInsertar.setSelectedIndex(0);
+//        JComboCocheInsertar.setSelectedIndex(0);
+//        JComboColorInsertar.setSelectedIndex(0);
+        JComboConcesionarioInsertar.removeAllItems();
+        JComboDNIInsertar.removeAllItems();
+        JComboCocheInsertar.removeAllItems();
+        JComboColorInsertar.removeAllItems();
     }
 
 }

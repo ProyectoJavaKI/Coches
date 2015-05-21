@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +30,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -83,6 +87,10 @@ public final class VentanaClientes extends JDialog {
     CustomDefaultTableModel ModeloTablaClientes;
     JTable Tabla_Clientes;
 
+    /*ELEMENTOS PARA LA IMPRESIÓN*/
+    JButton JButtonImprimir;
+    File xls;
+
     /*Estos JLabel son para ajustar los campos en los GridLayouts*/
     JLabel RCarro, RCarro2, RCarro3;
 
@@ -109,7 +117,7 @@ public final class VentanaClientes extends JDialog {
         panelClientes.add("Center", JScrollPaneTabla);//Lo situo al centro del BorderLayout
         ModeloTablaClientes.addColumn("DNI");
         ModeloTablaClientes.addColumn("NOMBRE");
-        ModeloTablaClientes.addColumn("APELLIDO");
+        ModeloTablaClientes.addColumn("APELLI");
         ModeloTablaClientes.addColumn("CIUDAD");
 
 
@@ -139,7 +147,7 @@ public final class VentanaClientes extends JDialog {
         JTextFieldNombreInsertar.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                int limitador = 20;
+                int limitador = 10;
                 char ch = e.getKeyChar();
                 if ((Character.isDigit(ch)) || (JTextFieldNombreInsertar.getText().length() >= limitador)) {
                     e.consume();
@@ -201,11 +209,8 @@ public final class VentanaClientes extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Inserta_Cliente();
-
+                    LimpiarJTable();
                     Cargar_Tabla_Clientes();
-                    JTextFieldNombreInsertar.setText(null);
-                    JTextFieldApellidoInsertar.setText(null);
-                    JTextFieldCiudadInsertar.setText(null);
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
@@ -217,9 +222,8 @@ public final class VentanaClientes extends JDialog {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    JTextFieldNombreInsertar.setText(null);
-                    JTextFieldApellidoInsertar.setText(null);
-                    JTextFieldCiudadInsertar.setText(null);
+                    LimpiarJTable();
+                    Cargar_Tabla_Clientes();
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -256,7 +260,7 @@ public final class VentanaClientes extends JDialog {
         JTextFieldNombreModificar.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                int limitador = 20;
+                int limitador = 12;
                 char ch = e.getKeyChar();
                 if ((Character.isDigit(ch)) || (JTextFieldNombreModificar.getText().length() >= limitador)) {
                     e.consume();
@@ -309,11 +313,8 @@ public final class VentanaClientes extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Modificar_Cliente();
-
+                    LimpiarJTable();
                     Cargar_Tabla_Clientes();
-                    JTextFieldNombreModificar.setText(null);
-                    JTextFieldApellidoModificar.setText(null);
-                    JTextFieldCiudadModificar.setText(null);
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
@@ -330,9 +331,8 @@ public final class VentanaClientes extends JDialog {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    JTextFieldNombreModificar.setText(null);
-                    JTextFieldApellidoModificar.setText(null);
-                    JTextFieldCiudadModificar.setText(null);
+                    LimpiarJTable();
+                    Cargar_Tabla_Clientes();
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -368,7 +368,25 @@ public final class VentanaClientes extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Eliminar_Cliente();
+                    LimpiarJTable();
+                    Cargar_Tabla_Clientes();
 
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        /*EL BOTÓN PARA IMPRIMIR (Lo pondré en el Panel de eliminación*/
+        xls = new File("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/ficheros/ficheroClientes.xls");
+        JButtonImprimir = new JButton("IMPRIMIR");
+        JpanelEliminarCliente.add(JButtonImprimir);
+        /* ACTIVO EL LISTENER*/
+        JButtonImprimir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    exportarjTable(Tabla_Clientes, xls);
+                    LimpiarJTable();
                     Cargar_Tabla_Clientes();
 
                 } catch (Exception err) {
@@ -414,32 +432,49 @@ public final class VentanaClientes extends JDialog {
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "¿SEGURO QUE QUIERES AÑADIR DATOS?: ",
                 "CONFIRMAR", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
         if (respuestaUsuario == 0) {
-            Connection miConexion = (Connection) conexion.ConectarMysql();
+            if (!JTextFieldNombreInsertar.getText().isEmpty() && !JTextFieldApellidoInsertar.getText().isEmpty() && !JTextFieldCiudadInsertar.getText().isEmpty()) {
 
-            try (Statement st = miConexion.createStatement()) {
-                String consulta = "SELECT * FROM `COCHES`.`CLIENTES`";
-                ResultSet rs = st.executeQuery(consulta);
-                Object[] fila = new Object[1];
-                while (rs.next()) {
-                    fila[0] = rs.getObject("DNI");
+                Connection miConexion = (Connection) conexion.ConectarMysql();
+
+                try (Statement st = miConexion.createStatement()) {
+                    String consulta = "SELECT * FROM `COCHES`.`CLIENTES`";
+                    ResultSet rs = st.executeQuery(consulta);
+                    Object[] fila = new Object[1];
+                    while (rs.next()) {
+                        fila[0] = rs.getObject("DNI");
+                    }
+
+                    int ultimo_num = Integer.parseInt((String) fila[0]);
+
+                    ultimo_num++;
+                    String nuevo_Cliente = null;
+                    if (ultimo_num < 9) {
+                        nuevo_Cliente = "000" + ultimo_num;
+                    }
+                    if (ultimo_num > 9 && ultimo_num <= 99) {
+                        nuevo_Cliente = "00" + ultimo_num;
+                    }
+                    if (ultimo_num > 99) {
+                        nuevo_Cliente = "0" + ultimo_num;
+                    }
+
+                    insertar = "INSERT INTO `COCHES`.`CLIENTES`(`DNI`, `NOMBRE`,`APELLIDO`,`CIUDAD`)"
+                            + " VALUES ('"
+                            + nuevo_Cliente + "', '"
+                            + JTextFieldNombreInsertar.getText() + "', '"
+                            + JTextFieldApellidoInsertar.getText() + "', '"
+                            + JTextFieldCiudadInsertar.getText() + "')";
+                    st.execute(insertar);
+
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                int ultimo_num = Integer.parseInt((String) fila[0]);
+            } else {
+                JOptionPane.showMessageDialog(null, "RELLENE TODOS LOS CAMPOS ANTES DE ACEPTAR");
 
-                ultimo_num++;
-                insertar = "INSERT INTO `COCHES`.`CLIENTES`(`DNI`, `NOMBRE`,`APELLIDO`,`CIUDAD`)"
-                        + " VALUES ('"
-                        + "00" + ultimo_num + "', '"
-                        + JTextFieldNombreInsertar.getText() + "', '"
-                        + JTextFieldApellidoInsertar.getText() + "', '"
-                        + JTextFieldCiudadInsertar.getText() + "')";
-                st.execute(insertar);
-                ModeloTablaClientes.setRowCount(0);
-                JComboEliminarCliente.removeAllItems();
-                JComboDNI.removeAllItems();
-                st.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
     }
     /*MÉTODO PARA ELIMINAR DATOS DE LA BASE
@@ -458,18 +493,14 @@ public final class VentanaClientes extends JDialog {
 
                 insertar = "DELETE FROM `coches`.`clientes` WHERE `DNI` = '" + opt + "'";
                 st.execute(insertar);
-                ModeloTablaClientes.setRowCount(0);
-                JComboEliminarCliente.removeAllItems();
-                JComboDNI.removeAllItems();
+
                 st.close();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(
                         this,
                         "ESTE CLIENTE HA REALIZADO COMPRAS,POR TANTO NO PUEDE ELIMINARSE. SI LO BORRAMOS PERDEREMOS LOS DATOS DE LA VENTA");
                 Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
-                ModeloTablaClientes.setRowCount(0);
-                JComboEliminarCliente.removeAllItems();
-                JComboDNI.removeAllItems();
+
             }
         }
     }
@@ -481,21 +512,23 @@ public final class VentanaClientes extends JDialog {
         int respuestaUsuario = JOptionPane.showOptionDialog(this, "SEGURO QUE QUIERES ACTUALIZAR LOS DATOS?: ",
                 "CONFIRMAR", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
         if (respuestaUsuario == 0) {
-            Connection miConexion = (Connection) conexion.ConectarMysql();
-            try (Statement st = miConexion.createStatement()) {
+            if (!JTextFieldNombreModificar.getText().isEmpty() && !JTextFieldApellidoModificar.getText().isEmpty() && !JTextFieldCiudadModificar.getText().isEmpty()) {
+                Connection miConexion = (Connection) conexion.ConectarMysql();
+                try (Statement st = miConexion.createStatement()) {
 
-                insertar = "UPDATE `coches`.`clientes` SET `NOMBRE`='" + JTextFieldNombreModificar.getText() + "',`APELLIDO`='" + JTextFieldApellidoModificar.getText() + "', `CIUDAD`='" + JTextFieldCiudadModificar.getText() + "' WHERE `DNI`='" + JComboDNI.getSelectedItem() + "'";
-                st.executeUpdate(insertar);
-                ModeloTablaClientes.setRowCount(0);
-                JComboDNI.removeAllItems();
-                JComboEliminarCliente.removeAllItems();
-                st.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
-                ModeloTablaClientes.setRowCount(0);
-                JComboEliminarCliente.removeAllItems();
-                JComboDNI.removeAllItems();
+                    insertar = "UPDATE `coches`.`clientes` SET `NOMBRE`='" + JTextFieldNombreModificar.getText() + "',`APELLIDO`='" + JTextFieldApellidoModificar.getText() + "', `CIUDAD`='" + JTextFieldCiudadModificar.getText() + "' WHERE `DNI`='" + JComboDNI.getSelectedItem() + "'";
+                    st.executeUpdate(insertar);
+
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(VentanaClientes.class.getName()).log(Level.SEVERE, null, ex);
+
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "RELLENE TODOS LOS CAMPOS ANTES DE ACEPTAR");
+
             }
+
         }
     }
 
@@ -519,6 +552,42 @@ public final class VentanaClientes extends JDialog {
             }
             return Object.class;
         }
+    }
+
+    public void exportarjTable(JTable tabla, File ficheroXLS) throws IOException {
+        TableModel modelo = tabla.getModel();
+        FileWriter fichero = new FileWriter(ficheroXLS);
+
+        for (int i = 0; i < modelo.getColumnCount(); i++) {
+            fichero.write(modelo.getColumnName(i) + "\t");
+        }
+        fichero.write("\n");
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fichero.write(modelo.getValueAt(i, j).toString() + "\t");
+            }
+            fichero.write("\n");
+        }
+        fichero.close();
+    }
+
+    /*RESETEAR DATOS DE JTABLE (Para poder insertar nuevos)*/
+    void LimpiarJTable() {
+        int a = ModeloTablaClientes.getRowCount();
+        for (int i = 0; i < a; i++) {
+            ModeloTablaClientes.removeRow(0);
+        }
+        JComboDNI.setSelectedIndex(0);
+        JComboEliminarCliente.setSelectedIndex(0);
+        JComboDNI.removeAllItems();
+        JComboEliminarCliente.removeAllItems();
+        JTextFieldNombreModificar.setText(null);
+        JTextFieldApellidoModificar.setText(null);
+        JTextFieldCiudadModificar.setText(null);
+        JTextFieldNombreInsertar.setText(null);
+        JTextFieldApellidoInsertar.setText(null);
+        JTextFieldCiudadInsertar.setText(null);
+
     }
 
 }

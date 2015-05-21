@@ -6,6 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -78,6 +82,10 @@ public final class VentanaCoches extends JDialog {
     CustomDefaultTableModel ModeloTablaCoches;
     JTable TablaCoches;
 
+    /*ELEMENTOS PARA LA IMPRESIÓN*/
+    JButton JButtonImprimir;
+    File xls;
+
     /* EN EL CONSTRUCTOR INICIALIZAMOS TODOS LOS PANELES QUE RELLENARÁN EL FRAME SUS COMPONENTES */
     public VentanaCoches() {
         super();//Heredo el JFrame
@@ -100,7 +108,7 @@ public final class VentanaCoches extends JDialog {
         TablaCoches = new JTable(ModeloTablaCoches);
         JScrollPaneTablacoches = new JScrollPane(TablaCoches);
         panel.add("Center", JScrollPaneTablacoches);//Lo situo al centro del BorderLayout
-        ModeloTablaCoches.addColumn("CODCOCHE");
+        ModeloTablaCoches.addColumn("COCHE");
         ModeloTablaCoches.addColumn("NOMBRE");
         ModeloTablaCoches.addColumn("MODELO");
 
@@ -142,9 +150,14 @@ public final class VentanaCoches extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Insertar_Coche();
-                   
+                    LimpiarJTable();
                     Cargar_Tabla_Coches();
-
+                    JComboCodigoModificar.setSelectedIndex(0);
+                    JComboEliminar.setSelectedIndex(0);
+                    JComboModeloInsertar.setSelectedIndex(0);
+                    JComboNombreInsertar.setSelectedIndex(0);
+                    JComboNombreModificar.setSelectedIndex(0);
+                    JComboModeloModificar.setSelectedIndex(0);
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -194,7 +207,7 @@ public final class VentanaCoches extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Modificar_Coche();
-                    
+                    LimpiarJTable();
                     Cargar_Tabla_Coches();
 
                 } catch (Exception err) {
@@ -222,7 +235,7 @@ public final class VentanaCoches extends JDialog {
         JpanelEliminar.add(JComboEliminar);
 
         /*INSERTO EL BOTÓN DE ELIMINACIÓN*/
-        JButtonEliminarCoches = new JButton("Eliminar");
+        JButtonEliminarCoches = new JButton("ELIMINAR");
         JpanelEliminar.add(JButtonEliminarCoches);
 
         /* ACTIVO EL LISTENER*/
@@ -231,7 +244,26 @@ public final class VentanaCoches extends JDialog {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Eliminar_Coche();
-                    
+                    LimpiarJTable();
+                    Cargar_Tabla_Coches();
+
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        /*EL BOTÓN PARA IMPRIMIR (Lo pondré en el Panel de eliminación*/
+        xls = new File("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/ficheros/ficheroCoches.xls");
+        JButtonImprimir = new JButton("IMPRIMIR");
+        JpanelEliminar.add(JButtonImprimir);
+        /* ACTIVO EL LISTENER*/
+        JButtonImprimir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    exportarjTable(TablaCoches, xls);
+                    LimpiarJTable();
                     Cargar_Tabla_Coches();
 
                 } catch (Exception err) {
@@ -264,6 +296,7 @@ public final class VentanaCoches extends JDialog {
                 fila[2] = (String) (rs.getObject("MODELO"));
                 ModeloTablaCoches.addRow(fila); // Añade una fila al final de la tabla
                 // La fila 0 equivale al CODCOCHE
+
                 JComboEliminar.addItem(fila[0]); // Añade una fila al final combo elimina
                 JComboCodigoModificar.addItem(fila[0]);
 
@@ -275,6 +308,7 @@ public final class VentanaCoches extends JDialog {
             while (rs.next()) {
                 fila[1] = (String) (rs.getObject("NOMBRE"));
                 // La fila 1 equivale al NOMBRE
+
                 JComboNombreInsertar.addItem(fila[1]);
                 JComboNombreModificar.addItem(fila[1]);
             }
@@ -286,6 +320,7 @@ public final class VentanaCoches extends JDialog {
             while (rs.next()) {
                 fila[2] = (String) (rs.getObject("MODELO"));
                 // La fila 2 equivale al MODELO
+
                 JComboModeloInsertar.addItem(fila[2]);
                 JComboModeloModificar.addItem(fila[2]);
             }
@@ -321,13 +356,7 @@ public final class VentanaCoches extends JDialog {
                         + JComboNombreInsertar.getSelectedItem() + "', '"
                         + JComboModeloInsertar.getSelectedItem() + "')";
                 st.execute(insertar);
-                ModeloTablaCoches.setRowCount(0);
-                JComboEliminar.removeAllItems();
-                JComboCodigoModificar.removeAllItems();
-                JComboNombreInsertar.removeAllItems();
-                JComboModeloInsertar.removeAllItems();
-                JComboModeloModificar.removeAllItems();
-                JComboNombreModificar.removeAllItems();
+
                 st.close();
             } catch (SQLException ex) {
                 Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
@@ -348,13 +377,7 @@ public final class VentanaCoches extends JDialog {
 
                 insertar = "DELETE FROM `coches`.`coches` WHERE `CODCOCHE` = '" + eleccion + "'";
                 st.execute(insertar);
-                ModeloTablaCoches.setRowCount(0);
-                JComboEliminar.removeAllItems();
-                JComboCodigoModificar.removeAllItems();
-                JComboNombreInsertar.removeAllItems();
-                JComboModeloInsertar.removeAllItems();
-                JComboModeloModificar.removeAllItems();
-                JComboNombreModificar.removeAllItems();
+
                 st.close();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(
@@ -362,6 +385,7 @@ public final class VentanaCoches extends JDialog {
                         "ESTE COCHE ESTÁ EN VENTA EN CONCESIONARIOS, POR TANTO NO PUEDE ELIMINARSE HASTA QUE SE ACABEN SUS EXISTENCIAS.");
                 Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
     }
     /*MÉTODO PARA MODIFICAR DATOS DE LA BASE
@@ -377,25 +401,47 @@ public final class VentanaCoches extends JDialog {
 
                 insertar = "UPDATE `coches`.`coches` SET `NOMBRE`='" + JComboNombreModificar.getSelectedItem() + "',`MODELO`='" + JComboModeloModificar.getSelectedItem() + "' WHERE `CODCOCHE`='" + JComboCodigoModificar.getSelectedItem() + "'";
                 st.executeUpdate(insertar);
-                ModeloTablaCoches.setRowCount(0);
-                JComboEliminar.removeAllItems();
-                JComboCodigoModificar.removeAllItems();
-                JComboNombreInsertar.removeAllItems();
-                JComboModeloInsertar.removeAllItems();
-                JComboModeloModificar.removeAllItems();
-                JComboNombreModificar.removeAllItems();
+
                 st.close();
             } catch (SQLException ex) {
                 Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-
     /*RESETEAR DATOS DE JTABLE (Para poder insertar nuevos)*/
+
     void LimpiarJTable() {
         int a = ModeloTablaCoches.getRowCount();
         for (int i = 0; i < a; i++) {
             ModeloTablaCoches.removeRow(0);
+        }
+        JComboCodigoModificar.setSelectedIndex(0);
+        JComboEliminar.setSelectedIndex(0);
+        JComboModeloInsertar.setSelectedIndex(0);
+        JComboNombreInsertar.setSelectedIndex(0);
+        JComboNombreModificar.setSelectedIndex(0);
+        JComboModeloModificar.setSelectedIndex(0);
+        JComboEliminar.removeAllItems();
+        JComboCodigoModificar.removeAllItems();
+        JComboNombreInsertar.removeAllItems();
+        JComboModeloInsertar.removeAllItems();
+        JComboModeloModificar.removeAllItems();
+        JComboNombreModificar.removeAllItems();
+    }
+
+    public void exportarjTable(JTable tabla, File ficheroXLS) throws IOException {
+        TableModel modelo = tabla.getModel();
+        try (FileWriter fichero = new FileWriter(ficheroXLS)) {
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                fichero.write(modelo.getColumnName(i) + "\t");
+            }
+            fichero.write("\n");
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                for (int j = 0; j < modelo.getColumnCount(); j++) {
+                    fichero.write(modelo.getValueAt(i, j).toString() + "\t");
+                }
+                fichero.write("\n");
+            }
         }
     }
 
