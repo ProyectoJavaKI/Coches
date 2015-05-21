@@ -17,13 +17,11 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,16 +29,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Lynchaniano
  */
-public class VentanaCoches extends JDialog  {
+public final class VentanaCoches extends JDialog {
 
-    private ConexionDB conexion = new ConexionDB();//La conexión con la base de datos
-
-    
+    private final ConexionDB conexion = new ConexionDB();//La conexión con la base de datos
 
     /*UN JPANEL PARA CONTENER TODOS LOS DEMÁS*/
     //JPanel panel;
     JPanel panel;
-    
+
 
     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA INSERTAR COCHES*/
     JPanel JPanelInsertar;//El Panel que contendrá todos los campos de insercción de datos
@@ -55,7 +51,7 @@ public class VentanaCoches extends JDialog  {
     String insertar;
 
 
-     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA MODIFICAR COCHES*/
+    /*CREO LOS COMPONENTES DE LA INTERFAZ PARA MODIFICAR COCHES*/
     JPanel JPanelModificar;
     JLabel JLabelCabeceraModificar;
     JLabel JLabelCodigoModificar;
@@ -70,7 +66,7 @@ public class VentanaCoches extends JDialog  {
     JButton JButtonAceptarModificar;
     JButton JButtonCancelarModificar;
 
-     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA ELIMINAR COCHES*/
+    /*CREO LOS COMPONENTES DE LA INTERFAZ PARA ELIMINAR COCHES*/
     JPanel JpanelEliminar;
     JLabel JLabelCabeceraEliminar;
     JComboBox JComboEliminar;
@@ -82,10 +78,7 @@ public class VentanaCoches extends JDialog  {
     CustomDefaultTableModel ModeloTablaCoches;
     JTable TablaCoches;
 
-    
-    
     /* EN EL CONSTRUCTOR INICIALIZAMOS TODOS LOS PANELES QUE RELLENARÁN EL FRAME SUS COMPONENTES */
-    
     public VentanaCoches() {
         super();//Heredo el JFrame
         /*DEFINO LA VENTANA MADRE*/
@@ -95,11 +88,11 @@ public class VentanaCoches extends JDialog  {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);//Habilito el botón de cierre en el Dialog.
         setLocationRelativeTo(null);
         setModal(true);
-        
+
         /*INICIALIZO UN PANEL CONTENEDOR GENERAL*/
         panel = (JPanel) this.getContentPane();
         panel.setLayout(new BorderLayout());//Border... para distribuir el resto de paneles.(EAST,WEST,NORTH,SOUTH,CENTER)
-        
+
         /*----------------------------------------------------------------------------------------------------------------
          DIBUJO EL PANEL DE QUE ALMACENARÁ LA TABLA CON LOS DATOS DE LOS COCHES
          ------------------------------------------------------------------------------------------------------------------*/
@@ -110,7 +103,7 @@ public class VentanaCoches extends JDialog  {
         ModeloTablaCoches.addColumn("CODCOCHE");
         ModeloTablaCoches.addColumn("NOMBRE");
         ModeloTablaCoches.addColumn("MODELO");
-        
+
 
         /*----------------------------------------------------------------------------------------------------------------
          DIBUJO EL PANEL DE INSERCIÓN Y SUS COMPONENTES
@@ -149,10 +142,8 @@ public class VentanaCoches extends JDialog  {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Insertar_Coche();
-                    LimpiarJTable();
+                   
                     Cargar_Tabla_Coches();
-                    
-
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
@@ -196,17 +187,15 @@ public class VentanaCoches extends JDialog  {
         /*INSERTO EL BOTÓN ACEPTAR MODIFICACIÓN*/
         JButtonAceptarModificar = new JButton("ACEPTAR");
         JPanelModificar.add(JButtonAceptarModificar);
-        
-         /* ACTIVO EL LISTENER*/
+
+        /* ACTIVO EL LISTENER*/
         JButtonAceptarModificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Modificar_Coche();
-                    LimpiarJTable();
-                    Cargar_Tabla_Coches();
                     
-
+                    Cargar_Tabla_Coches();
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
@@ -231,35 +220,33 @@ public class VentanaCoches extends JDialog  {
         ModeloComboEliminar = new DefaultComboBoxModel();
         JComboEliminar = new JComboBox(ModeloComboEliminar);
         JpanelEliminar.add(JComboEliminar);
-        
+
         /*INSERTO EL BOTÓN DE ELIMINACIÓN*/
         JButtonEliminarCoches = new JButton("Eliminar");
         JpanelEliminar.add(JButtonEliminarCoches);
-        
-         /* ACTIVO EL LISTENER*/
+
+        /* ACTIVO EL LISTENER*/
         JButtonEliminarCoches.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Eliminar_Coche();
-                    LimpiarJTable();
-                    Cargar_Tabla_Coches();
                     
-
+                    Cargar_Tabla_Coches();
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        
-        
+
         /*POR ÚLTIMO, RELLENAMOS LA TABLA CON DATOS DE LA BASE*/
         Cargar_Tabla_Coches();
 
     }
     /*MÉTODO PARA CARGAR DATOS AL JTABLE A TRAVÉS DE CONSULTA SQL
-        APROVECHANDO EL RECORRIDO DE LAS TABLAS,TAMBIEN RELLENA LOS JCOMBOBOX*/
+     APROVECHANDO EL RECORRIDO DE LAS TABLAS,TAMBIEN RELLENA LOS JCOMBOBOX*/
+
     void Cargar_Tabla_Coches() {
 
         Connection miConexion = (Connection) conexion.ConectarMysql();
@@ -279,7 +266,7 @@ public class VentanaCoches extends JDialog  {
                 // La fila 0 equivale al CODCOCHE
                 JComboEliminar.addItem(fila[0]); // Añade una fila al final combo elimina
                 JComboCodigoModificar.addItem(fila[0]);
-                
+
             } //fin while
             consulta = "SELECT DISTINCT NOMBRE FROM `COCHES`.`COCHES`";
             rs = st.executeQuery(consulta);
@@ -309,51 +296,65 @@ public class VentanaCoches extends JDialog  {
         }
     }
     /*MÉTODO PARA INSERTAR DATOS EN LA BASE
-        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMOBOX PARA PODER ACTUALIZARLOS Y EVITAR DUPLICIDAD EN SU CONTENIDO */
+     TAMBIÉN RESETEA EL JTABLE Y LOS JCOMOBOX PARA PODER ACTUALIZARLOS Y EVITAR DUPLICIDAD EN SU CONTENIDO */
+
     void Insertar_Coche() {
-
-        Connection miConexion = (Connection) conexion.ConectarMysql();
-
-        try (Statement st = miConexion.createStatement()) {
-            String consulta = "SELECT * FROM `coches`.`coches`";
-            ResultSet rs = st.executeQuery(consulta);
-            Object[] fila = new Object[1];
-            while (rs.next()) {
-                fila[0] = rs.getObject("CODCOCHE");
-            }
-            int ultimo_num = Integer.parseInt((String) fila[0]);
-
-            ultimo_num++;
-            String insertar = "INSERT INTO `coches`.`coches`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
-                    + " VALUES ('"
-                    + "0" + ultimo_num + "', '"
-                    + JComboNombreInsertar.getSelectedItem() + "', '"
-                    + JComboModeloInsertar.getSelectedItem() + "')";
-            st.execute(insertar);
-            ModeloTablaCoches.setRowCount(0);
-            JComboEliminar.removeAllItems();
-            JComboCodigoModificar.removeAllItems();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    /*MÉTODO PARA ELIMINAR DATOS DE LA BASE
-        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
-    void Eliminar_Coche() {
-        Object[] opciones = {"Sí, Eliminar este coche", "No, no eliminar"};
-        int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a eliminar un cohce ¿es ta seguro?: ",
-                "Confirmar eliminación del Coche", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
+        Object[] opciones = {"ACEPTAR", "CANCELAR"};
+        int respuestaUsuario = JOptionPane.showOptionDialog(this, "¿SEGURO QUE QUIERES AÑADIR DATOS?: ",
+                "CONFIRMAR", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
         if (respuestaUsuario == 0) {
             Connection miConexion = (Connection) conexion.ConectarMysql();
-            String opt = (String) JComboEliminar.getSelectedItem();
-            try (Statement st = miConexion.createStatement()) {
 
-                String insertar = "DELETE FROM `coches`.`coches` WHERE `CODCOCHE` = '" + opt + "'";
+            try (Statement st = miConexion.createStatement()) {
+                String consulta = "SELECT * FROM `coches`.`coches`";
+                ResultSet rs = st.executeQuery(consulta);
+                Object[] fila = new Object[1];
+                while (rs.next()) {
+                    fila[0] = rs.getObject("CODCOCHE");
+                }
+                int ultimo_num = Integer.parseInt((String) fila[0]);
+
+                ultimo_num++;
+                insertar = "INSERT INTO `coches`.`coches`(`CODCOCHE`, `NOMBRE`,`MODELO`)"
+                        + " VALUES ('"
+                        + "0" + ultimo_num + "', '"
+                        + JComboNombreInsertar.getSelectedItem() + "', '"
+                        + JComboModeloInsertar.getSelectedItem() + "')";
                 st.execute(insertar);
                 ModeloTablaCoches.setRowCount(0);
                 JComboEliminar.removeAllItems();
                 JComboCodigoModificar.removeAllItems();
+                JComboNombreInsertar.removeAllItems();
+                JComboModeloInsertar.removeAllItems();
+                JComboModeloModificar.removeAllItems();
+                JComboNombreModificar.removeAllItems();
+                st.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    /*MÉTODO PARA ELIMINAR DATOS DE LA BASE
+     TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
+
+    void Eliminar_Coche() {
+        Object[] opciones = {"ACEPTAR", "CANCELAR"};
+        int respuestaUsuario = JOptionPane.showOptionDialog(this, "¿SEGURO QUE QUIERES ELIMINAR LOS DATOS?: ",
+                "CONFIRMAR", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
+        if (respuestaUsuario == 0) {
+            Connection miConexion = (Connection) conexion.ConectarMysql();
+            String eleccion = (String) JComboEliminar.getSelectedItem();
+            try (Statement st = miConexion.createStatement()) {
+
+                insertar = "DELETE FROM `coches`.`coches` WHERE `CODCOCHE` = '" + eleccion + "'";
+                st.execute(insertar);
+                ModeloTablaCoches.setRowCount(0);
+                JComboEliminar.removeAllItems();
+                JComboCodigoModificar.removeAllItems();
+                JComboNombreInsertar.removeAllItems();
+                JComboModeloInsertar.removeAllItems();
+                JComboModeloModificar.removeAllItems();
+                JComboNombreModificar.removeAllItems();
                 st.close();
             } catch (SQLException ex) {
                 Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
@@ -361,20 +362,25 @@ public class VentanaCoches extends JDialog  {
         }
     }
     /*MÉTODO PARA MODIFICAR DATOS DE LA BASE
-        TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
+     TAMBIÉN RESETEA EL JTABLE Y LOS JCOMBOBOX PARA PODER ACTUALIZAR SU CONTENIDO*/
+
     void Modificar_Coche() {
-        Object[] opciones = {"Sí, actualizar datos de este coche", "No, no actualizar datos de este coche"};
-        int respuestaUsuario = JOptionPane.showOptionDialog(this, "Va a actualizar la informacion de un cohce ¿es ta seguro?: ",
-                "Confirmar actualizacion del Coche", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
+        Object[] opciones = {"ACTUALIZAR DATOS", "CANCELAR ACTUALIZACIÓN"};
+        int respuestaUsuario = JOptionPane.showOptionDialog(this, "SEGURO QUE QUIERES ACTUALIZAR LOS DATOS?: ",
+                "CONFIRMAR", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);
         if (respuestaUsuario == 0) {
             Connection miConexion = (Connection) conexion.ConectarMysql();
             try (Statement st = miConexion.createStatement()) {
 
-                String insertar = "UPDATE `coches`.`coches` SET `NOMBRE`='" + JComboNombreModificar.getSelectedItem() + "',`MODELO`='" + JComboModeloModificar.getSelectedItem() + "' WHERE `CODCOCHE`='" + JComboCodigoModificar.getSelectedItem() + "'";
+                insertar = "UPDATE `coches`.`coches` SET `NOMBRE`='" + JComboNombreModificar.getSelectedItem() + "',`MODELO`='" + JComboModeloModificar.getSelectedItem() + "' WHERE `CODCOCHE`='" + JComboCodigoModificar.getSelectedItem() + "'";
                 st.executeUpdate(insertar);
                 ModeloTablaCoches.setRowCount(0);
-                JComboCodigoModificar.removeAllItems();
                 JComboEliminar.removeAllItems();
+                JComboCodigoModificar.removeAllItems();
+                JComboNombreInsertar.removeAllItems();
+                JComboModeloInsertar.removeAllItems();
+                JComboModeloModificar.removeAllItems();
+                JComboNombreModificar.removeAllItems();
                 st.close();
             } catch (SQLException ex) {
                 Logger.getLogger(VentanaCoches.class.getName()).log(Level.SEVERE, null, ex);
@@ -389,22 +395,28 @@ public class VentanaCoches extends JDialog  {
             ModeloTablaCoches.removeRow(0);
         }
     }
-    
+
     /*CREAMOS UN MODELO DE TABLA PERSONALIZADO PARA EVITAR QUE EL USUARIO INTERACTÚE CON LOS DATOS */
-    public class CustomDefaultTableModel extends DefaultTableModel
-    {
-        public boolean isCellEditable (int row, int column)
-        {
-           return false;
+    public class CustomDefaultTableModel extends DefaultTableModel {
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
         }
-        public Class getColumnClass(int columna)
-        {
-           if (columna == 0) return String.class; // en la bbdd es un Char(3) por eso pongo String
-           if (columna == 1) return String.class;
-           if (columna == 2) return String.class;
-           return Object.class;
+
+        @Override
+        public Class getColumnClass(int columna) {
+            if (columna == 0) {
+                return String.class; // en la bbdd es un Char(3) por eso pongo String
+            }
+            if (columna == 1) {
+                return String.class;
+            }
+            if (columna == 2) {
+                return String.class;
+            }
+            return Object.class;
         }
     }
-    
 
 }

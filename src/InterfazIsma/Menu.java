@@ -112,6 +112,8 @@ public class Menu {
 
         // Create and set up the window.
         frame = new JFrame("MENÚ OPCIONES");
+        
+        frame.setResizable(false);//Evito que se pueda redimensionar la ventana
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Component contents = VentanaMenu();
