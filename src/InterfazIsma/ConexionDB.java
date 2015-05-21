@@ -16,11 +16,11 @@ public class ConexionDB {
         {
             Class.forName("com.mysql.jdbc.Driver");
             String servidor = "jdbc:mysql://localhost:3306/COCHES?zeroDateTimeBehaviour=converttoNull";
-            
-            String usuarioDB="kevin";
-            String passwordDB="";
-//            String usuarioDB="root";
-//            String passwordDB="Deranged0107";
+//            
+//            String usuarioDB="kevin";
+//            String passwordDB="";
+            String usuarioDB="root";
+            String passwordDB="Deranged0107";
             
             conexion= DriverManager.getConnection(servidor,usuarioDB,passwordDB);
         }

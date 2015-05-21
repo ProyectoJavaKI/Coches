@@ -40,8 +40,8 @@ public final class VentanaVentas extends JDialog {
     JPanel panel;
 
     /*CREO LOS COMPONENTES DE LA INTERFAZ PARA INSERTAR VENTAS*/
-    JPanel JPanelInsertar;//El Panel que contendrá todos los campos de insercción de datos
-    JLabel JLabelCabeceraInsertar;//La cabecera del panel
+    JPanel JPanelInsertar;
+    JLabel JLabelCabeceraInsertar;//
     JLabel JLabelConcesionarioInsertar;
     JComboBox JComboConcesionarioInsertar;
     DefaultComboBoxModel ModeloConcesionarioInsertar;
@@ -62,13 +62,13 @@ public final class VentanaVentas extends JDialog {
     CustomDefaultTableModel ModeloTablaVentas;
     JTable TablaVentas;
 
-    /*ELEMENTOS PARA LA IMPRESIÓN*/
+    /*ELEMENTOS PARA LA IMPRESIÓN DEL FICHERO*/
     JButton JButtonImprimir;
     File xls;
 
     /* EN EL CONSTRUCTOR INICIALIZAMOS TODOS LOS PANELES QUE RELLENARÁN EL FRAME SUS COMPONENTES */
     public VentanaVentas() {
-        super();//Heredo el JFrame
+        super();//Heredo el JDialog
         /*DEFINO LA VENTANA MADRE*/
         setSize(720, 360);//le doy altura y ancho a la ventana (JFrame)
         setTitle("VENTAS");//la titulo
@@ -156,6 +156,7 @@ public final class VentanaVentas extends JDialog {
                     Insertar_Ventas();
                     LimpiarJTable();
                     Cargar_Tabla_Ventas();
+                    Recarga_Combo_Concesionarios();
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
@@ -174,6 +175,7 @@ public final class VentanaVentas extends JDialog {
                     exportarjTable(TablaVentas, xls);
                     LimpiarJTable();
                     Cargar_Tabla_Ventas();
+                    Recarga_Combo_Concesionarios();
 
                 } catch (Exception err) {
                     JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
@@ -282,7 +284,7 @@ public final class VentanaVentas extends JDialog {
             int numero = Integer.parseInt("" + fila[4]);
             try (Statement st2 = miConexion.createStatement()) {
                 if (numero == 0) {
-//comprovar que CONCESIONARIO.CANTIDAD contiene un numero valido ( NO 0)         
+            //comprovar que CONCESIONARIO.CANTIDAD contiene un numero valido ( NO 0)         
                     Object cantidad[] = new Object[1];
                     consulta = "SELECT CANTIDAD FROM `COCHES`.`distribucion` "
                             + "WHERE `CIFC`='" + JComboConcesionarioInsertar.getSelectedItem() + "' "
@@ -314,7 +316,7 @@ public final class VentanaVentas extends JDialog {
                         System.out.println(insertar);
                         st.execute(insertar);
 
-                        ModeloTablaVentas.setRowCount(0);
+                        
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "ESTA VENTA YA SE HA REALIZADO CON ANTERIORIDAD");
@@ -397,10 +399,7 @@ public final class VentanaVentas extends JDialog {
         for (int i = 0; i < a; i++) {
             ModeloTablaVentas.removeRow(0);
         }
-//        JComboConcesionarioInsertar.setSelectedIndex(0);
-//        JComboDNIInsertar.setSelectedIndex(0);
-//        JComboCocheInsertar.setSelectedIndex(0);
-//        JComboColorInsertar.setSelectedIndex(0);
+
         JComboConcesionarioInsertar.removeAllItems();
         JComboDNIInsertar.removeAllItems();
         JComboCocheInsertar.removeAllItems();
