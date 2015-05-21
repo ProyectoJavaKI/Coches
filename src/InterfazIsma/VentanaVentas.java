@@ -74,7 +74,7 @@ public class VentanaVentas extends JDialog  {
         super();//Heredo el JFrame
         /*DEFINO LA VENTANA MADRE*/
         setSize(720, 360);//le doy altura y ancho a la ventana (JFrame)
-        setTitle("GESTIÓN COCHES");//la titulo
+        setTitle("VENTAS");//la titulo
         setResizable(false);//Evito que se pueda redimensionar la ventana
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);//Habilito el botón de cierre en el Dialog.
         setLocationRelativeTo(null);

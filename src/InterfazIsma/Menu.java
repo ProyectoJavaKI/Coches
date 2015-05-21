@@ -9,22 +9,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
 public class Menu {
 
-    private static VentanaCoches Coches = new VentanaCoches();
-    private static VentanaClientes Clientes = new VentanaClientes();
-    private static VentanaDistribucion Distribucion = new VentanaDistribucion();
-    private static VentanaVentas Ventas = new VentanaVentas();
+    private static final VentanaCoches Coches = new VentanaCoches();
+    private static final VentanaClientes Clientes = new VentanaClientes();
+    private static final VentanaDistribucion Distribucion = new VentanaDistribucion();
+    private static final VentanaVentas Ventas = new VentanaVentas();
 
     private static JFrame frame;
 
-    private static JButton ButtonCoches, ButtonCliente, ButtonDistribucion, ButtonVentas;
-    private static ImageIcon IconCoches, IconCliente, IconDistribucion, IconVentas;
+    private static JButton ButtonCoches, ButtonCliente, ButtonDistribucion, ButtonVentas, ButtonAbout;
+    private static ImageIcon IconCoches, IconCliente, IconDistribucion, IconVentas, IconTotoro;
 
     private static JPanel VentanaMenu() {
         PanelTransparente panel = new PanelTransparente();
@@ -32,7 +31,7 @@ public class Menu {
         panel.setBackgroundImage(panel.createImg("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/concesionario.jpg").getImage());
 
         ButtonCoches = new JButton();
-        IconCoches = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/coches.png");
+        IconCoches = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/coche.jpg");
         ButtonCoches.setIcon(IconCoches);
 
         /* ACTIVO EL LISTENER*/
@@ -50,7 +49,7 @@ public class Menu {
         panel.add(ButtonCoches);
 
         ButtonCliente = new JButton();
-        IconCliente = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/uno.png");
+        IconCliente = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/cliente.jpg");
         ButtonCliente.setIcon(IconCliente);
         
         ButtonCliente.addActionListener(new ActionListener() {
@@ -67,7 +66,7 @@ public class Menu {
         panel.add(ButtonCliente);
 
         ButtonDistribucion = new JButton();
-        IconDistribucion = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/dos.jpg");
+        IconDistribucion = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/distribucion.jpg");
         ButtonDistribucion.setIcon(IconDistribucion);
         
         ButtonDistribucion.addActionListener(new ActionListener() {
@@ -85,7 +84,7 @@ public class Menu {
         panel.add(ButtonDistribucion);
 
         ButtonVentas = new JButton();
-        IconVentas = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/tres.png");
+        IconVentas = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/venta.jpg");
         ButtonVentas.setIcon(IconVentas);
         
         ButtonVentas.addActionListener(new ActionListener() {
@@ -100,6 +99,24 @@ public class Menu {
             }
         });
         panel.add(ButtonVentas);
+        
+        ButtonAbout = new JButton();
+        IconTotoro = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/Totoro.jpg");
+        ButtonAbout.setIcon(IconTotoro);
+        
+        ButtonAbout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    
+                    
+
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        panel.add(ButtonAbout);
 
         return panel;
     }
