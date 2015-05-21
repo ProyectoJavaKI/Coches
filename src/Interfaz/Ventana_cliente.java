@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -209,7 +208,8 @@ public class Ventana_cliente  extends JDialog implements ActionListener, WindowL
     void inserta(){
         
         Connection miConexion = (Connection) conexion.ConectarMysql();
-        
+        if(!txt_dni.getText().isEmpty() && !txt_nombre.getText().isEmpty() && !txt_apellido.getText().isEmpty() && !txt_ciudad.getText().isEmpty() )
+        {
         try (Statement st = miConexion.createStatement()) {
             
             String insertar = "INSERT INTO `coches`.`clientes`(`DNI`, `NOMBRE`,`APELLIDO`,`CIUDAD`)"
@@ -226,6 +226,14 @@ public class Ventana_cliente  extends JDialog implements ActionListener, WindowL
         } 
         catch (SQLException ex) {
             Logger.getLogger(Ventana_cliente.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.setRowCount(0);
+            cmb_eliminar_cliente.removeAllItems();
+            cmb_actualiza_cliente.removeAllItems();
+        }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "hay campos vacios, porfavor rellenelos corectamente");
             modelo.setRowCount(0);
             cmb_eliminar_cliente.removeAllItems();
             cmb_actualiza_cliente.removeAllItems();
@@ -264,25 +272,34 @@ public class Ventana_cliente  extends JDialog implements ActionListener, WindowL
         "Confirmar actualizacion del Coche", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[1]);        
         if(respuestaUsuario == 0)
         {
-            Connection miConexion = (Connection) conexion.ConectarMysql();
-            try (Statement st = miConexion.createStatement()) {
+            if(!txt_actualiza_nombre.getText().isEmpty() && !txt_actualiza_apellido.getText().isEmpty() && !txt_actualiza_ciudad.getText().isEmpty() )
+            {
+                Connection miConexion = (Connection) conexion.ConectarMysql();
+                try (Statement st = miConexion.createStatement()) {
 
-                String insertar = "UPDATE `coches`.`clientes` SET `NOMBRE`='"+txt_actualiza_nombre.getText()+"',`APELLIDO`='"+txt_actualiza_apellido.getText()+"', `CIUDAD`='"+txt_actualiza_ciudad.getText()+"' WHERE `DNI`='"+cmb_actualiza_cliente.getSelectedItem()+"'";
-                st.executeUpdate(insertar);
-                modelo.setRowCount(0);
-                cmb_actualiza_cliente.removeAllItems();
-                cmb_eliminar_cliente.removeAllItems();
-                st.close();
-            } 
-            catch (SQLException ex) {
-                Logger.getLogger(Ventana_cliente.class.getName()).log(Level.SEVERE, null, ex);
+                    String insertar = "UPDATE `coches`.`clientes` SET `NOMBRE`='"+txt_actualiza_nombre.getText()+"',`APELLIDO`='"+txt_actualiza_apellido.getText()+"', `CIUDAD`='"+txt_actualiza_ciudad.getText()+"' WHERE `DNI`='"+cmb_actualiza_cliente.getSelectedItem()+"'";
+                    st.executeUpdate(insertar);
+                    modelo.setRowCount(0);
+                    cmb_actualiza_cliente.removeAllItems();
+                    cmb_eliminar_cliente.removeAllItems();
+                    st.close();
+                } 
+                catch (SQLException ex) {
+                    Logger.getLogger(Ventana_cliente.class.getName()).log(Level.SEVERE, null, ex);
+                    modelo.setRowCount(0);
+                    cmb_eliminar_cliente.removeAllItems();
+                    cmb_actualiza_cliente.removeAllItems();
+                }
+            }
+                else
+            {
+                JOptionPane.showMessageDialog(null, "hay campos sin rellenas, para la correcta actualizacion deve rellenar los campos correctamente");
                 modelo.setRowCount(0);
                 cmb_eliminar_cliente.removeAllItems();
                 cmb_actualiza_cliente.removeAllItems();
             }
         }
     }
-    
 /*modelo de la tabla (solo tiene tres campos de momento)*/
     public class MiModelo extends DefaultTableModel
     {

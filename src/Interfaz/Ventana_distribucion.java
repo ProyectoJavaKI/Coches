@@ -230,62 +230,72 @@ public class Ventana_DISTRIBUCION extends JDialog implements ActionListener, Win
     void inserta(){
         
         Connection miConexion = (Connection) conexion.ConectarMysql();
-        
-        try (Statement st = miConexion.createStatement()) {
-            
-            String consulta = "SELECT CIFC, CODCOCHE, CANTIDAD, count(CANTIDAD) from `COCHES`.`DISTRIBUCION` "
-                    + "WHERE `CIFC` = '"+cmb_CIFC.getSelectedItem()+"' "
-                    + "AND `CODCOCHE` = '"+cmb_CODCOCHE.getSelectedItem()+"'";
-            System.out.println(consulta);
-            
-            Object [] fila = new Object[4];
-            
-            ResultSet rs = st.executeQuery(consulta);
-            
-            while (rs.next()) {
-                fila[0] = (String) (rs.getObject("CIFC"));
-                fila[1] =  (String) (rs.getObject("CODCOCHE"));
-                fila[2] =  rs.getObject("CANTIDAD");
-                fila[3] =  rs.getObject(4);
-            }
-            int numero = Integer.parseInt(fila[3]+"");
-            
-            rs.beforeFirst();
-            
-            if (numero == 0)
-            {
-                String insertar = "INSERT INTO `COCHES`.`DISTRIBUCION`(`CIFC`, `CODCOCHE`,`CANTIDAD`)"
-                            + " VALUES ('"
-                            + cmb_CIFC.getSelectedItem()+ "', '"
-                            + cmb_CODCOCHE.getSelectedItem()+ "', '"
-                            +txt_CANTIDAD.getText()+"')";
-                st.execute(insertar);
+        if(!txt_CANTIDAD.getText().isEmpty())
+        {
+            try (Statement st = miConexion.createStatement()) {
+
+                String consulta = "SELECT CIFC, CODCOCHE, CANTIDAD, count(CANTIDAD) from `COCHES`.`DISTRIBUCION` "
+                        + "WHERE `CIFC` = '"+cmb_CIFC.getSelectedItem()+"' "
+                        + "AND `CODCOCHE` = '"+cmb_CODCOCHE.getSelectedItem()+"'";
+                System.out.println(consulta);
+
+                Object [] fila = new Object[4];
+
+                ResultSet rs = st.executeQuery(consulta);
+
+                while (rs.next()) {
+                    fila[0] = (String) (rs.getObject("CIFC"));
+                    fila[1] =  (String) (rs.getObject("CODCOCHE"));
+                    fila[2] =  rs.getObject("CANTIDAD");
+                    fila[3] =  rs.getObject(4);
+                }
+                int numero = Integer.parseInt(fila[3]+"");
+
+                rs.beforeFirst();
+
+                if (numero == 0)
+                {
+                    String insertar = "INSERT INTO `COCHES`.`DISTRIBUCION`(`CIFC`, `CODCOCHE`,`CANTIDAD`)"
+                                + " VALUES ('"
+                                + cmb_CIFC.getSelectedItem()+ "', '"
+                                + cmb_CODCOCHE.getSelectedItem()+ "', '"
+                                +txt_CANTIDAD.getText()+"')";
+                    st.execute(insertar);
+                    modelo_tabla.setRowCount(0);
+                }
+                else
+                {
+                    int num = Integer.parseInt(txt_CANTIDAD.getText());
+                    int cantidad = (int) fila[2];
+                    int suma = num + cantidad;
+
+                    String update = "UPDATE `DISTRIBUCION` SET `CANTIDAD`="+suma+" "
+                            + "WHERE `CIFC`='"+cmb_CIFC.getSelectedItem()+"' "
+                            + "and `CODCOCHE`='"+cmb_CODCOCHE.getSelectedItem()+"'";
+                    System.out.println(update);
+                    st.execute(update);
+                    modelo_tabla.setRowCount(0);
+                }
+
+
+                cmb_CIFC.removeAllItems();
+                cmb_CODCOCHE.removeAllItems();
                 modelo_tabla.setRowCount(0);
+
+                st.close();
+
+            } 
+            catch (SQLException ex) {
+                Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else
-            {
-                int num = Integer.parseInt(txt_CANTIDAD.getText());
-                int cantidad = (int) fila[2];
-                int suma = num + cantidad;
-                
-                String update = "UPDATE `DISTRIBUCION` SET `CANTIDAD`="+suma+" "
-                        + "WHERE `CIFC`='"+cmb_CIFC.getSelectedItem()+"' "
-                        + "and `CODCOCHE`='"+cmb_CODCOCHE.getSelectedItem()+"'";
-                System.out.println(update);
-                st.execute(update);
-                modelo_tabla.setRowCount(0);
+            catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Error en el formato del numero, solo numeros enteros");
             }
-                    
             
-            cmb_CIFC.removeAllItems();
-            cmb_CODCOCHE.removeAllItems();
-            modelo_tabla.setRowCount(0);
-            
-            st.close();
-            
-        } 
-        catch (SQLException ex) {
-            Logger.getLogger(Ventana_DISTRIBUCION.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Introdusca un numero valido");
         }
     }
     
