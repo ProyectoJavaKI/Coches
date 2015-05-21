@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 public class Ventana_principal extends JFrame implements ActionListener, WindowListener{
     
     private JPanel panel;
-    private JButton btn_coche;
-    private JButton btn_consecionario_coche;
+    private JButton btn_COCHES;
+    private JButton btn_CONCESIONARIO;
     private JButton btn_actualizar_coche;
-    private JButton btn_insertar_distribucion;
+    private JButton btn_DISTRIBUCION;
     private JButton btn_eliminar_venta;
     private JButton btn_actualizar_venta;
-    private JButton btn_cliente;
-    private JButton btn_eliminar_cliente;
+    private JButton btn_CLIENTES;
+    private JButton btn_VENTAS;
     private JButton btn_actualizar_cliente;
     
     Ventana_principal(){
@@ -34,63 +34,68 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
         this.setLocation(200, 200); //posicion X, Y
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); //Cerrar programa al pulsar la X
         
-        btn_coche = new JButton("COCHES");
-        btn_consecionario_coche = new JButton("CONCESIONARIO");
+        btn_COCHES = new JButton("COCHES");
+        btn_CONCESIONARIO = new JButton("CONCESIONARIO");
         btn_actualizar_coche = new JButton("-------------");
         
-        btn_insertar_distribucion = new JButton("DISTRIBUCION");
+        btn_DISTRIBUCION = new JButton("DISTRIBUCION");
         btn_eliminar_venta = new JButton("-------------");
         btn_actualizar_venta = new JButton("-------------");
         
-        btn_cliente = new JButton("CLIENTES");
-        btn_eliminar_cliente = new JButton("-------------");
+        btn_CLIENTES = new JButton("CLIENTES");
+        btn_VENTAS = new JButton("VENTAS");
         btn_actualizar_cliente = new JButton("-------------");
         
         /*posicion X;Y, dimencion X,Y*/
-        btn_coche.setBounds(50, 30, 150, 30);
-        btn_consecionario_coche.setBounds(50, 70, 150, 30);
+        btn_COCHES.setBounds(50, 30, 150, 30);
+        btn_CONCESIONARIO.setBounds(50, 70, 150, 30);
         btn_actualizar_coche.setBounds(50, 110, 150, 30);
         
-        btn_insertar_distribucion.setBounds(210, 30, 180, 30);
+        btn_DISTRIBUCION.setBounds(210, 30, 180, 30);
         btn_eliminar_venta.setBounds(210, 70, 180, 30);
         btn_actualizar_venta.setBounds(210, 110, 180, 30);
         
-        btn_cliente.setBounds(400, 30, 180, 30);
-        btn_eliminar_cliente.setBounds(400, 70, 180, 30);
+        btn_CLIENTES.setBounds(400, 30, 180, 30);
+        btn_VENTAS.setBounds(400, 70, 180, 30);
         btn_actualizar_cliente.setBounds(400, 110, 180, 30);
         
         
         
-        panel.add(btn_coche);
-        panel.add(btn_consecionario_coche);
+        panel.add(btn_COCHES);
+        panel.add(btn_CONCESIONARIO);
         panel.add(btn_actualizar_coche);
-        panel.add(btn_insertar_distribucion);
+        panel.add(btn_DISTRIBUCION);
         panel.add(btn_eliminar_venta);
         panel.add(btn_actualizar_venta);
-        panel.add(btn_cliente);
-        panel.add(btn_eliminar_cliente);
+        panel.add(btn_CLIENTES);
+        panel.add(btn_VENTAS);
         panel.add(btn_actualizar_cliente);
         
         
-        btn_coche.addActionListener(new java.awt.event.ActionListener() {
+        btn_COCHES.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cocheActionPerformed(evt);
             }
     });
-        btn_cliente.addActionListener(new java.awt.event.ActionListener() {
+        btn_CLIENTES.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_clienteActionPerformed(evt);
             }
     });
-        btn_consecionario_coche.addActionListener(new java.awt.event.ActionListener() {
+        btn_CONCESIONARIO.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_consecionario_cocheActionPerformed(evt);
             }
     });
         
-        btn_insertar_distribucion.addActionListener(new java.awt.event.ActionListener() {
+        btn_DISTRIBUCION.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_insertar_distribucionActionPerformed(evt);
+            }
+    });
+        btn_VENTAS.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_VENTASActionPerformed(evt);
             }
     });
         
@@ -115,7 +120,12 @@ public class Ventana_principal extends JFrame implements ActionListener, WindowL
     
     private void btn_insertar_distribucionActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
-        Ventana_distribucion v = new Ventana_distribucion();
+        Ventana_DISTRIBUCION v = new Ventana_DISTRIBUCION();
+    }
+    
+    private void btn_VENTASActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        // TODO add your handling code here:
+        Ventana_VENTA v = new Ventana_VENTA();
     }
     
     @Override
