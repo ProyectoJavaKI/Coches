@@ -1,4 +1,4 @@
-package InterfazIsma;
+package InterfazCoches;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -448,7 +448,7 @@ public final class VentanaClientes extends JDialog {
 
                     ultimo_num++;
                     String nuevo_Cliente = null;
-                    if (ultimo_num < 9) {
+                    if (ultimo_num <= 9) {
                         nuevo_Cliente = "000" + ultimo_num;
                     }
                     if (ultimo_num > 9 && ultimo_num <= 99) {

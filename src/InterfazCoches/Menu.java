@@ -1,4 +1,4 @@
-package InterfazIsma;
+package InterfazCoches;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -47,10 +47,10 @@ public class Menu {
          frame.setLocation(width, height);
         
         
-        panel.setBackgroundImage(panel.createImg("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/concesionario.jpg").getImage());
+        panel.setBackgroundImage(panel.createImg("src/images/concesionario.jpg").getImage());
 
         ButtonCoches = new JButton();
-        IconCoches = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/coche.jpg");
+        IconCoches = new ImageIcon("src/images/coche.jpg");
         ButtonCoches.setIcon(IconCoches);
 
         /* ACTIVO EL LISTENER*/
@@ -68,7 +68,7 @@ public class Menu {
         panel.add(ButtonCoches);
 
         ButtonCliente = new JButton();
-        IconCliente = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/cliente.jpg");
+        IconCliente = new ImageIcon("src/images/cliente.jpg");
         ButtonCliente.setIcon(IconCliente);
 
         ButtonCliente.addActionListener(new ActionListener() {
@@ -85,7 +85,7 @@ public class Menu {
         panel.add(ButtonCliente);
 
         ButtonDistribucion = new JButton();
-        IconDistribucion = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/distribucion.jpg");
+        IconDistribucion = new ImageIcon("src/images/distribucion.jpg");
         ButtonDistribucion.setIcon(IconDistribucion);
 
         ButtonDistribucion.addActionListener(new ActionListener() {
@@ -103,7 +103,7 @@ public class Menu {
         panel.add(ButtonDistribucion);
 
         ButtonVentas = new JButton();
-        IconVentas = new ImageIcon("/Users/Lynchaniano/Documents/NetBeansJava/Coches/src/images/venta.jpg");
+        IconVentas = new ImageIcon("src/images/venta.jpg");
         ButtonVentas.setIcon(IconVentas);
 
         ButtonVentas.addActionListener(new ActionListener() {

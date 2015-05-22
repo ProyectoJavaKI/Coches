@@ -1,4 +1,4 @@
-package InterfazIsma;
+package InterfazCoches;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -68,7 +68,7 @@ public final class VentanaVentas extends JDialog {
 
     /* EN EL CONSTRUCTOR INICIALIZAMOS TODOS LOS PANELES QUE RELLENARÁN EL FRAME SUS COMPONENTES */
     public VentanaVentas() {
-        super();//Heredo el JDialog
+        //Heredo el JDialog
         /*DEFINO LA VENTANA MADRE*/
         setSize(720, 360);//le doy altura y ancho a la ventana (JFrame)
         setTitle("VENTAS");//la titulo
@@ -276,12 +276,13 @@ public final class VentanaVentas extends JDialog {
 
             while (rs.next()) {
                 fila[0] = (String) (rs.getObject("CIFC"));
-                fila[1] = (String) (rs.getObject("DNI"));
                 fila[2] = rs.getObject("CODCOCHE");
-                fila[3] = rs.getObject("COLOR");
+                fila[1] = (String) (rs.getObject("DNI"));
+                fila[3] = rs.getObject("COLOR"); 
                 fila[4] = rs.getObject(5);
             }
             int numero = Integer.parseInt("" + fila[4]);
+            
             try (Statement st2 = miConexion.createStatement()) {
                 if (numero == 0) {
             //comprovar que CONCESIONARIO.CANTIDAD contiene un numero valido ( NO 0)         
@@ -298,7 +299,6 @@ public final class VentanaVentas extends JDialog {
                     int cant = Integer.parseInt("" + cantidad[0]);
                     if (cant > 0) {
 
-                        
                         cant--;
                         String update = "UPDATE `COCHES`.`DISTRIBUCION` SET `CANTIDAD`=" + cant + " "
                                 + "WHERE `CIFC`='" + JComboConcesionarioInsertar.getSelectedItem() + "' "

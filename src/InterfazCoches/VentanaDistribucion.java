@@ -1,4 +1,4 @@
-package InterfazIsma;
+package InterfazCoches;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -107,7 +107,7 @@ public final class VentanaDistribucion extends JDialog {
         panel.add("West", JPanelInsertar);//Lo situo a la izquierda del Panel General
 
         /*INSERTO LOS CAMPOS DE INSERTAR*/
-        JLabelCabeceraInsertar = new JLabel("AÑADIR O TRASLADAR COCHE");
+        JLabelCabeceraInsertar = new JLabel("AÑADIR COCHES A CONCESIONARIOS");
         JLabelCabeceraInsertar.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
         JLabelCabeceraInsertar.setForeground(Color.decode("#8A0808"));//Personaliza el color del botón por código RGB
         JPanelInsertar.add(JLabelCabeceraInsertar);

@@ -1,4 +1,4 @@
-package InterfazIsma;
+package InterfazCoches;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -374,7 +374,7 @@ public final class VentanaCoches extends JDialog {
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Este coche ya ha sido añadido antes");
+                    JOptionPane.showMessageDialog(null, "EL COCHE QUE SE INTENTA AÑADIR YA EXISTE");
                     
                 
                 }
